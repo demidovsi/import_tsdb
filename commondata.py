@@ -2,6 +2,7 @@ import requests
 from requests.exceptions import HTTPError
 import json
 import commondata
+import commonthread
 
 
 info_code = "NSI"
@@ -10,8 +11,10 @@ user_name = "user"
 password = "!AlteroSmart123"
 url = '127.0.0.1:5000/'
 url_ksvd = '127.0.0.1:3000/'
+url_tsdb = '127.0.0.1:3001/'
 token = None
 expires = None
+mas_thread = []
 
 def login_ksvd():
     result = False
@@ -63,14 +66,24 @@ def send_rest(mes, dir="GET"):
         result = response.ok
     return txt, result
 
-def make_list_his():
-    txt, result = send_rest('TypeParam.GetList')
-    mas = []
-    if result:
-        js = json.loads(txt)
-        mas_js = js[0]
-        for j in range(0, len(mas_js)):
-            if mas_js[j]['typeinfo_code'].upper() == 'HIS':
-                if mas_js[j]['typeobj_code'] + '.' + mas_js[j]['code'] not in mas:
-                  mas.append(mas_js[j]['typeobj_code'] + '.' + mas_js[j]['code'])
-    print(mas)
+
+def send_tsdb(mes, dir="GET"):
+    try:
+        headers = {
+            "Accept": "application/json"
+        }
+        response = requests.request(dir, url_tsdb + mes, headers=headers)
+    except HTTPError as err:
+        txt = f'HTTP error occurred: {err}'
+        print('Ошибка запроса к RESTProxy', txt + '\n\t' + mes)
+        result = False
+    except Exception as err:
+        txt = f'Other error occurred: {err}'
+        print('Ошибка запроса к RESTProxy', txt + '\n\t' + mes)
+        result = False
+    else:
+        txt = response.text
+        result = response.ok
+    return txt, result
+
+

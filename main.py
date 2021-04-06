@@ -1,5 +1,6 @@
 from xml.etree import ElementTree as ET
 import commondata
+import commonthread
 import os
 
 
@@ -11,6 +12,7 @@ try:
     commondata.schema_name =  os.environ.get("MDMPROXY_SCHEMA_NAME")
     commondata.url =  os.environ.get("MDMPROXY_URL")
     commondata.url_ksvd =  os.environ.get("MDMPROXY_URL_KSVD")
+    commondata.url_tsdb =  os.environ.get("MDMPROXY_URL_TSDB")
     commondata.user_name =  os.environ.get("MDMPROXY_USER_NAME")
     commondata.password =  os.environ.get("MDMPROXY_PASSWORD")
     f = open('config.xml', 'r', encoding='utf-8')
@@ -28,6 +30,8 @@ try:
                         commondata.url = ch.text
                     elif ch.tag == 'URL_KSVD':
                         commondata.url_ksvd = ch.text
+                    elif ch.tag == 'URL_TSDB':
+                        commondata.url_tsdb = ch.text
                     elif ch.tag == 'UserName':
                         commondata.user_name = ch.text
                     elif ch.tag == 'Password':
@@ -41,9 +45,10 @@ print('\tpassword=', commondata.password)
 txt, result = commondata.login_ksvd()
 if result:
     print(commondata.token)
-commondata.make_list_his()
+    at = commonthread.TImport()
+    at.run()
 
 while True:
-    pass  ###
+    pass
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
