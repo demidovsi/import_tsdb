@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<Modeler>
+    <MDMProxy>
+        <Host>127.0.0.1</Host>
+        <Port>7000</Port>
+        <Interval>30</Interval>
+        <InfoCode>NSI</InfoCode>
+        <SchemaName>test</SchemaName>
+        <TCP_IP>False</TCP_IP>
+        <URL>http://127.0.0.1:5000/</URL>
+        <URL_KSVD>http://127.0.0.1:3000/</URL_KSVD>
+        <UserName>user</UserName>
+        <Password>!AlteroSmart123</Password>
+    </MDMProxy>
+</Modeler>
