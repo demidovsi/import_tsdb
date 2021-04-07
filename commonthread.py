@@ -64,7 +64,7 @@ class TImport(threading.Thread):
                                     commondata.write_log('WARN', 'Timport.run', txt)
                                 else:
                                     commondata.write_log(
-                                        'DEBUG', 'Timport.run',  '"' + mas["id"] + '"' + ' ' + mas["typeobj_code"] + ' ' +
+                                        'DEBUG', 'Timport.run', mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
                                         mas["param_code"] + ' ' + str(discret) + ' ' + str(val) + ' ' +
                                         time.ctime(tek_time))
 

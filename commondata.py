@@ -18,75 +18,77 @@ mas_js = None  # текущий массив параметров
 txt = None  # текст текущего масива параметров
 check_mas_db = 30  # периодичность проверки изменений в НСИ исторических данных
 
+
 def login_ksvd():
     result = False
-    txt_z = {"username": user_name, "password": password, "rememberMe": True}
+    # txt_z = {"username": user_name, "password": password, "rememberMe": True}
     try:
         headers = {"Accept": "application/json"}
-        response = requests.request('POST', url + 'auth/login', headers=headers,
+        response = requests.request(
+            'POST', url + 'auth/login', headers=headers,
             json={"username": user_name, "password": password, "rememberMe": True}
             )
     except HTTPError as err:
-        txt = f'HTTP error occurred: {err}'
-        commondata.write_log('ERROR', 'login_ksvd', txt)
+        data = f'HTTP error occurred: {err}'
+        commondata.write_log('ERROR', 'login_ksvd', data)
     except Exception as err:
-        txt = f'Other error occurred: : {err}'
-        commondata.write_log('ERROR', 'login_ksvd', txt)
+        data = f'Other error occurred: : {err}'
+        commondata.write_log('ERROR', 'login_ksvd', data)
     else:
         try:
-            txt = response.text
+            data = response.text
             result = response.ok
             if result:
-                js = json.loads(txt)
+                js = json.loads(data)
                 commondata.token = js["accessToken"]
                 commondata.expires = js["expires"]
         except Exception as err:
-            txt_error = f'Error occurred: : {err}'
-            commondata.write_log('ERROR', 'login_ksvd', txt_error)
-    return txt, result
+            data = f'Error occurred: : {err}'
+            commondata.write_log('ERROR', 'login_ksvd', data)
+    return data, result
 
 
-def send_rest(mes, dir="GET"):
+def send_rest(mes, directiva="GET"):
     if not token:
         return 'Не получен токен для работы', False
     try:
         headers = {
             "Accept": "application/json"
         }
-        response = requests.request(dir, url + mes, headers=headers,
+        response = requests.request(directiva, url + mes, headers=headers,
                                     json={"token": commondata.token})
     except HTTPError as err:
-        txt = f'HTTP error occurred: {err}'
-        write_log('ERROR', 'send_rest', txt + '\n\t' + mes)
+        data = f'HTTP error occurred: {err}'
+        write_log('ERROR', 'send_rest', data + '\n\t' + mes)
         result = False
     except Exception as err:
-        txt = f'Other error occurred: {err}'
-        write_log('ERROR', 'send_rest', txt + '\n\t' + mes)
+        data = f'Other error occurred: {err}'
+        write_log('ERROR', 'send_rest', data + '\n\t' + mes)
         result = False
     else:
-        txt = response.text
+        data = response.text
         result = response.ok
-    return txt, result
+    return data, result
 
 
-def send_tsdb(mes: str, dir="GET") -> (str, bool):
+def send_tsdb(mes: str, directiva="GET") -> (str, bool):
     try:
         headers = {
             "Accept": "application/json"
         }
-        response = requests.request(dir, url_tsdb + mes, headers=headers)
+        response = requests.request(directiva, url_tsdb + mes, headers=headers)
     except HTTPError as err:
-        txt = f'HTTP error occurred: {err}'
-        write_log('ERROR', 'send_tsdb', txt + '\n\t' + mes)
+        data = f'HTTP error occurred: {err}'
+        write_log('ERROR', 'send_tsdb', data + '\n\t' + mes)
         result = False
     except Exception as err:
-        txt = f'Other error occurred: {err}'
-        write_log('ERROR', 'send_tsdb', txt + '\n\t' + mes)
+        data = f'Other error occurred: {err}'
+        write_log('ERROR', 'send_tsdb', data + '\n\t' + mes)
         result = False
     else:
-        txt = response.text
+        data = response.text
         result = response.ok
-    return txt, result
+    return data, result
 
 
 def time_for_sql(dt, convert=True) -> str:
@@ -98,5 +100,5 @@ def time_for_sql(dt, convert=True) -> str:
 
 def write_log(level: str, src: str, msg: str):
     print(
-        "lvl=" + level + ' ' + 'scr="' + src +'" msg="' +
-        str(msg).replace('"','\"') + '"')
+        "lvl=" + level + ' ' + 'src="' + str(src).replace('"', "'") + '" msg="' +
+        str(msg).replace('"', "'") + '"')

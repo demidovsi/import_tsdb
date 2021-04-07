@@ -3,17 +3,17 @@ import commondata
 import commonthread
 import os
 import time
-# from logzero import logger
 
 
 def start_thread():
     at = commonthread.TImport()
     commondata.is_live = True
     at.start()
-    commondata.write_log('INFO', 'main', 'Start Timport')
+    commondata.write_log('INFO', 'main', 'Start Timport ' + time.ctime())
 
 # if __name__ == '__main__':
     # print(f'Hi word. I am "Import from TSDB"')
+
 
 try:
     commondata.info_code = os.environ.get("MDMPROXY_INFO_CODE")
