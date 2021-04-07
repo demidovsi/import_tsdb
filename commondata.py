@@ -2,7 +2,6 @@ import requests
 from requests.exceptions import HTTPError
 import json
 import commondata
-import datetime
 
 
 info_code = "NSI"
