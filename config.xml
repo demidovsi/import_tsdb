@@ -8,8 +8,8 @@
         <SchemaName>test</SchemaName>
         <TCP_IP>False</TCP_IP>
         <URL>http://127.0.0.1:5000/</URL>
-        <URL_KSVD>http://127.0.0.1:3000/</URL_KSVD>
         <URL_TSDB>http://127.0.0.1:3001/</URL_TSDB>
+	<Check_mas_db>30 </Check_mas_db>
         <UserName>user</UserName>
         <Password>!AlteroSmart123</Password>
     </MDMProxy>

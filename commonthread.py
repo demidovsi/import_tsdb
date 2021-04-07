@@ -2,34 +2,41 @@ import threading
 import commondata
 import json
 import time
+import datetime
 
 
 class TImport(threading.Thread):
     needStop = False
-    mas_js = None
-    mas_time = []
+    time_check = None
 
     def __init__(self):
         threading.Thread.__init__(self)
         self.daemon = True
-        txt, result = commondata.send_rest('Entity.GetListHis')
+        commondata.txt, result = self.get_params()
         if result:
-            js = json.loads(txt)
-            self.mas_js = js[0]
-            for mas in self.mas_js:
-                self.mas_time.append(0)
-                print(mas)
+            self.print_params()
+        self.time_check = time.time()  # время последней проверки базы данных
+
+    def get_params(self):
+        txt, result = commondata.send_rest('Entity.GetListHis')
+        return txt, result
+
+    def print_params(self):
+        js = json.loads(commondata.txt)
+        commondata.mas_js = js[0]
+        for mas in commondata.mas_js:
+            commondata.write_log('DEBUG', 'Timport.print_params', mas)
 
     def run(self):
+        tek_time = time.time()
         while not self.needStop:
-            for j in range(0, len(self.mas_js)):
+            dt = datetime.datetime.utcnow()
+            for mas in commondata.mas_js:
                 try:
-                    mas = self.mas_js[j]
                     discret = int(mas["discret"])
-                    tek_time = time.time()
                     if tek_time % discret <= 1:
-                        t_beg = int(tek_time - 10) * 1000000
-                        t_end = int(tek_time - 9) * 1000000
+                        t_beg = int(tek_time - 1) * 1000000
+                        t_end = int(tek_time) * 1000000
                         txt, result = commondata.send_tsdb(
                             'processed?id=' + mas["equipment_id"] + '&tsFrom=' + str(t_beg) + '&tsTo=' + str(t_end))
                         if result:
@@ -49,14 +56,33 @@ class TImport(threading.Thread):
                                         count = count + 1
                             if count > 0:
                                 val = val / count  # среднее значение
+                                st = commondata.time_for_sql(dt, False)
                                 txt, result = commondata.send_rest(
-                                'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +
-                                str(mas["id"]) + '/' + str(val), 'POST')
+                                    'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +
+                                    str(mas["id"]) + '/' + str(val) + '?dt=' + st, 'POST')
                                 if not result:
-                                    print(txt)
+                                    commondata.write_log('WARN', 'Timport.run', txt)
                                 else:
-                                    print(time.ctime(), mas["id"], mas["typeobj_code"], mas["param_code"], discret, val)
+                                    commondata.write_log(
+                                        'DEBUG', 'Timport.run',  '"' + mas["id"] + '"' + ' ' + mas["typeobj_code"] + ' ' +
+                                        mas["param_code"] + ' ' + str(discret) + ' ' + str(val) + ' ' +
+                                        time.ctime(tek_time))
 
-                except:
-                    pass
-            time.sleep(1)
+                except Exception as err:
+                    commondata.write_log(
+                        'ERROR ', 'Timport.run' + f"{err}" + ' ' + mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
+                        mas["param_code"] + ' ' + mas["discret"])
+            # цикл по параметрам закончен
+            if tek_time - self.time_check >= commondata.check_mas_db:
+                txt, result = self.get_params()
+                if result:
+                    if txt != commondata.txt:
+                        commondata.txt = txt
+                        commondata.mas_js = json.loads(commondata.txt)[0]
+                        print(time.ctime(), 'check_mas_db - приняты изменения')
+                        self.print_params()
+                self.time_check = time.time()
+            else:
+                time.sleep(1)
+                tek_time = time.time()
+        commondata.is_live = False
