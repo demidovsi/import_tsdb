@@ -47,15 +47,19 @@ try:
                     elif ch.tag == 'Check_mas_db':
                         commondata.check_mas_db = int(ch.text)
 except Exception as e:
-    commondata.write_log('INFO', 'main', f"{e}")
+    commondata.write_log('ERROR', 'main', f"{e}")
+
+commondata.write_log('INFO', 'main', 'SchemaName=' + commondata.schema_name)
+commondata.write_log('INFO', 'main', 'InfoCode=' + commondata.info_code)
 commondata.write_log('INFO', 'main', 'url_MDM=' + commondata.url)
 commondata.write_log('INFO', 'main', 'url_TSDB=' + commondata.url_tsdb)
 commondata.write_log('INFO', 'main', 'user_name=' + commondata.user_name)
 commondata.write_log('INFO', 'main', 'password=' + commondata.password)
 commondata.write_log('INFO', 'main', 'check_mas_db=' + str(commondata.check_mas_db) + ' сек')
+
 txt, result = commondata.login_ksvd()
 if result:
-    # print(commondata.token)
+    print(time.ctime(), commondata.token)
     start_thread()
 while True:
     time.sleep(1)

@@ -3,6 +3,8 @@
     <MDMProxy>
         <Host>127.0.0.1</Host>
         <Port>7000</Port>
+        <OwnHost>127.0.0.1</OwnHost>
+        <OwnPort>5000</OwnPort>
         <Interval>30</Interval>
         <InfoCode>NSI</InfoCode>
         <SchemaName>test</SchemaName>
