@@ -14,6 +14,7 @@ token = None
 expires = None
 mas_thread = []
 is_live = False
+is_live_post_fact = False
 mas_js = None  # текущий массив параметров
 txt = None  # текст текущего масива параметров
 check_mas_db = 30  # периодичность проверки изменений в НСИ исторических данных
@@ -103,3 +104,8 @@ def write_log(level: str, src: str, msg: str):
     print(
         "lvl=" + level + ' ' + 'src="' + str(src).replace('"', "'") + '" msg="' +
         str(msg).replace('"', "'") + '"')
+
+
+def getpole(txt, separator=';'):
+    k = txt.partition(separator)
+    return k[0], k[2]

@@ -11,6 +11,13 @@ def start_thread():
     at.start()
     commondata.write_log('INFO', 'main', 'Start Timport ' + time.ctime())
 
+
+def start_thread_post_fact():
+    at = commonthread.TPostFact()
+    commondata.is_live_post_fact = True
+    at.start()
+    commondata.write_log('INFO', 'main', 'Start PostFact ' + time.ctime())
+
 # if __name__ == '__main__':
     # print(f'Hi word. I am "Import from TSDB"')
 
@@ -61,8 +68,12 @@ txt, result = commondata.login_ksvd()
 if result:
     print(time.ctime(), commondata.token)
     start_thread()
+    start_thread_post_fact()
 while True:
     time.sleep(1)
     if not commondata.is_live:
         commondata.write_log('WARN', 'main', 'Cancel Timport')
         start_thread()
+    if not commondata.is_live_post_fact:
+        commondata.write_log('WARN', 'main', 'Cancel TPostFact')
+        start_thread_post_fact()
