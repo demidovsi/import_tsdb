@@ -3,6 +3,7 @@ import commondata
 import commonthread
 import os
 import time
+import postfact
 
 
 def start_thread():
@@ -13,7 +14,7 @@ def start_thread():
 
 
 def start_thread_post_fact():
-    at = commonthread.TPostFact()
+    at = postfact.TPostFact()
     commondata.is_live_post_fact = True
     at.start()
     commondata.write_log('INFO', 'main', 'Start PostFact ' + time.ctime())

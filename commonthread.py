@@ -45,7 +45,7 @@ class TImport(threading.Thread):
                             toper = time.time()
                             txt, result = commondata.send_tsdb(
                                 'processed?id=' + mas["equipment_id"] + '&tsFrom=' + str(t_beg) + '&tsTo=' +
-                                str(t_end) + '&aggregationWindow='+str(discret*1000000))
+                                str(t_end) + '&aggregationWindow='+str(discret*100000))
                             toper = time.time() - toper
                             if result:
                                 # print(t_beg, t_end, txt)
@@ -76,12 +76,10 @@ class TImport(threading.Thread):
                                             'DEBUG', 'Timport.run', mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
                                             mas["param_code"] + ' ' + str(discret) + ' ' + str(val) + ' ' +
                                             time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
-                                                                    "; count=" + str(count) + '; t=' + str(toper)
+                                            "; count=" + str(count) + '; tek=' + time.ctime() + '; t=' + str(toper)
                                         )
                             else:
                                 commondata.count_error = commondata.count_error + 1
-
-
                     except Exception as err:
                         commondata.count_error = commondata.count_error + 1
                         commondata.write_log(
@@ -94,12 +92,15 @@ class TImport(threading.Thread):
                         if txt != commondata.txt:
                             commondata.txt = txt
                             commondata.mas_js = json.loads(commondata.txt)[0]
-                            print(time.ctime(), 'check_mas_db - приняты изменения')
+                            commondata.write_log(
+                                'WARN', 'Timport.run', time.ctime() + 'check_mas_db - приняты изменения')
                             self.print_params()
                     self.time_check = time.time()
                 else:
                     if time.time() - time_login >= 3600:  #  прошел час
-                        print(time.ctime(), commondata.token)
+                        commondata.write_log(
+                            'WARN', 'Timport.run', time.ctime() + 'login_ksvd')
+                        # print(time.ctime(), commondata.token)
                         commondata.login_ksvd()
                         time_login = time.time()
                 time.sleep(1)
@@ -107,50 +108,3 @@ class TImport(threading.Thread):
         except Exception as err:
             commondata.write_log('FATAL ', 'Timport.run', f"{err}")
         commondata.is_live = False
-
-
-class TPostFact(threading.Thread):
-    needStop = False
-    time_check = None
-
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.daemon = True
-        self.time_check = 0  # время последней проверки базы данных
-
-    def run(self):
-        while True:
-            tek_time = time.time()
-            try:
-                if tek_time - self.time_check >= commondata.check_mas_db * 2:
-                    list = []
-                    list_obj = []
-                    list_param = []
-                    for mas in commondata.mas_js:
-                        st = mas["typeobj_code"] + '_' + mas['param_code']
-                        if st not in list:
-                            list.append(st)  # список возможных постфактумов
-                            list_obj.append(mas["typeobj_code"])
-                            list_param.append(mas["param_code"])
-                    if len(list) > 0:
-                # читаем конфигурацию
-                        txt, result = commondata.send_rest('Entity.FullList/config')
-                        if result:
-                            js = json.loads(txt)[0]
-                            for i in range(0, len(js)):
-                                st = js[i]["sh_name"]
-                                if st in list:  # можно делать потоки для постфактумного заполнения
-                                    mt = js[i]["value_string"]
-                                    for j in range(0, len(list)):
-                                        if st == list[j]:
-                                            typeobj_code = list_obj[j]
-                                            param_code = list_param[j]
-                                            break
-                                    t_beg, t_end = commondata.getpole(mt, '~LF~')
-                                    print(typeobj_code, param_code, t_beg, t_end)
-                    self.time_check = time.time()
-                time.sleep(1)
-
-            except Exception as err:
-                commondata.write_log('FATAL ', 'Timport.run', f"{err}")
-        commondata.is_live_post_fact = False

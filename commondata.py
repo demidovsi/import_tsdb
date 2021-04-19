@@ -2,6 +2,7 @@ import requests
 from requests.exceptions import HTTPError
 import json
 import commondata
+import time
 
 
 info_code = "NSI"
@@ -96,8 +97,8 @@ def send_tsdb(mes: str, directive="GET") -> (str, bool):
 def time_for_sql(dt, convert=True) -> str:
     if convert:
         dt = dt.toPyDateTime()
-    return str(dt.year) + '-' + str(dt.month) + '-' + str(dt.day) + ' ' + \
-        str(dt.hour) + ':' + str(dt.minute) + ':' + str(dt.second)
+    return str(dt.year) + '-' + str(dt.month).zfill(2) + '-' + str(dt.day).zfill(2) + ' ' + \
+        str(dt.hour).zfill(2) + ':' + str(dt.minute).zfill(2) + ':' + str(dt.second).zfill(2)
 
 
 def write_log(level: str, src: str, msg: str):
