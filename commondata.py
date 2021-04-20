@@ -48,6 +48,7 @@ def login_ksvd():
         except Exception as err:
             data = f'Error occurred: : {err}'
             write_log('ERROR', 'login_ksvd', data)
+            result = False
     return data, result
 
 
@@ -74,23 +75,29 @@ def send_rest(mes, directive="GET"):
     return data, result
 
 
-def send_tsdb(mes: str, directive="GET") -> (str, bool):
-    try:
-        headers = {
-            "Accept": "application/json"
-        }
-        response = requests.request(directive, url_tsdb + mes, headers=headers)
-    except HTTPError as err:
-        data = f'HTTP error occurred: {err}'
+def send_tsdb(mes: str, directive="GET", qrepeat =2) -> (str, bool):
+    result = False
+    q = 0
+    while not result and (q < qrepeat):
+        try:
+            headers = {
+                "Accept": "application/json"
+            }
+            response = requests.request(directive, url_tsdb + mes, headers=headers)
+        except HTTPError as err:
+            data = f'HTTP error occurred: {err}'
+            result = False
+            q = q + 1
+        except Exception as err:
+            data = f'Other error occurred: {err}'
+            result = False
+            q = q + 1
+        else:
+            data = response.text
+            result = response.ok
+            q = q + 1
+    if not result:
         write_log('ERROR', 'send_tsdb', data + '\n\t' + mes)
-        result = False
-    except Exception as err:
-        data = f'Other error occurred: {err}'
-        write_log('ERROR', 'send_tsdb', data + '\n\t' + mes)
-        result = False
-    else:
-        data = response.text
-        result = response.ok
     return data, result
 
 
