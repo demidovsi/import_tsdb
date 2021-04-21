@@ -93,7 +93,7 @@ class TImport(threading.Thread):
                             commondata.txt = txt
                             commondata.mas_js = json.loads(commondata.txt)[0]
                             commondata.write_log(
-                                'WARN', 'Timport.run', time.ctime() + 'check_mas_db - приняты изменения')
+                                'WARN', 'Timport.run', time.ctime() + ' check_mas_db - приняты изменения')
                             self.print_params()
                     self.time_check = time.time()
                 else:
