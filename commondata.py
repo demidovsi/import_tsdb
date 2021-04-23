@@ -2,7 +2,6 @@ import requests
 from requests.exceptions import HTTPError
 import json
 import commondata
-import time
 
 
 info_code = "NSI"
@@ -15,11 +14,15 @@ token = None
 expires = None
 mas_thread = []
 is_live = False
+is_live_meteo_fact = False
+is_live_meteo_forecast = False
 is_live_post_fact = False
 mas_js = None  # текущий массив параметров
 txt = None  # текст текущего масива параметров
 check_mas_db = 30  # периодичность проверки изменений в НСИ исторических данных
 count_error = 0
+MeteoFact = None
+MeteoForecast = None
 
 
 def login_ksvd():
@@ -117,3 +120,10 @@ def write_log(level: str, src: str, msg: str):
 def getpole(txt, separator=';'):
     k = txt.partition(separator)
     return k[0], k[2]
+
+
+def traslateToBase(st):
+    st = st.replace('\n', '~LF~').replace('(', '~A~').replace(')', '~B~').replace('@', '~a1~')
+    st = st.replace(',', '~a2~').replace('=', '~a3~').replace('"', '~a4~').replace("'", '~a5~')
+    st = st.replace(':', '~a6~')
+    return st

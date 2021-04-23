@@ -36,6 +36,9 @@ class TImport(threading.Thread):
             while not self.needStop and (commondata.count_error < 50):
                 dt = datetime.datetime.utcnow()
                 for mas in commondata.mas_js:
+                    if mas["type_his"] != 'data':
+                        continue
+                    # обрабатываем только тип временных рядов data
                     try:
                         discret = int(mas["discret"])
                         delta = tek_time % discret
@@ -67,8 +70,8 @@ class TImport(threading.Thread):
                                     st = commondata.time_for_sql(dt, False)
                                     txt, result = commondata.send_rest(
                                         'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +
-                                        str(mas["id"]) + '/' + str(val) + '?dt=' + st, 'POST')
-                                    if not result:
+                                        str(mas["id"]) + '?value=' + str(val) + '&dt=' + st, 'POST')
+                                    if not result or ('error_sql' in txt):
                                         commondata.count_error = commondata.count_error + 1
                                         commondata.write_log('WARN', 'Timport.run', txt)
                                     else:
@@ -83,13 +86,16 @@ class TImport(threading.Thread):
                     except Exception as err:
                         commondata.count_error = commondata.count_error + 1
                         commondata.write_log(
-                            'ERROR ', 'Timport.run' + f"{err}" + ' ' + mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
-                            mas["param_code"] + ' ' + mas["discret"])
+                            'ERROR ', 'Timport.run', f"{err}" + ' ' + mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
+                            mas["param_code"] + ' ' + str(mas["discret"]))
                 # цикл по параметрам закончен
                 if tek_time - self.time_check >= commondata.check_mas_db:
                     txt, result = self.get_params()
                     if result:
                         if txt != commondata.txt:
+                            # if commondata.MeteoFact:
+                            #     commondata.MeteoFact.needStop = True # остановить метеофакты
+                            #     time.sleep(1)
                             commondata.txt = txt
                             commondata.mas_js = json.loads(commondata.txt)[0]
                             commondata.write_log(

@@ -4,6 +4,8 @@ import commonthread
 import os
 import time
 import postfact
+import meteo_fact
+import meteo_forecast
 
 
 def start_thread():
@@ -13,11 +15,25 @@ def start_thread():
     commondata.write_log('INFO', 'main', 'Start Timport ' + time.ctime())
 
 
+def start_thread_meteo_fact():
+    commondata.MeteoFact = meteo_fact.TMeteoFact()
+    commondata.is_live_meteo_fact = True
+    commondata.MeteoFact.start()
+    commondata.write_log('INFO', 'main', 'Start TMeteoFact ' + time.ctime())
+
+
+def start_thread_meteo_forecast():
+    commondata.MeteoForecast = meteo_forecast.TMeteoForecast()
+    commondata.is_live_meteo_forecast = True
+    commondata.MeteoForecast.start()
+    commondata.write_log('INFO', 'main', 'Start TMeteoForecast ' + time.ctime())
+
+
 def start_thread_post_fact():
     at = postfact.TPostFact()
     commondata.is_live_post_fact = True
     at.start()
-    commondata.write_log('INFO', 'main', 'Start PostFact ' + time.ctime())
+    commondata.write_log('INFO', 'main', 'Start TPostFact ' + time.ctime())
 
 # if __name__ == '__main__':
     # print(f'Hi word. I am "Import from TSDB"')
@@ -84,6 +100,8 @@ if not result:
 print(time.ctime(), commondata.token)
 start_thread()
 start_thread_post_fact()
+start_thread_meteo_fact()
+start_thread_meteo_forecast()
 while True:
     time.sleep(1)
     if not commondata.is_live:
@@ -92,3 +110,9 @@ while True:
     if not commondata.is_live_post_fact:
         commondata.write_log('WARN', 'main', 'Cancel TPostFact')
         start_thread_post_fact()
+    if not commondata.is_live_meteo_fact:
+        commondata.write_log('WARN', 'main', 'Cancel TMeteoFact')
+        start_thread_meteo_fact()
+    if not commondata.is_live_meteo_forecast:
+        commondata.write_log('WARN', 'main', 'Cancel TMeteoForecast')
+        start_thread_meteo_forecast()
