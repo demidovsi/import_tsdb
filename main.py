@@ -94,6 +94,7 @@ def read_params():
     commondata.write_log('INFO', 'main', 'password=' + commondata.password)
     commondata.write_log('INFO', 'main', 'check_mas_db=' + str(commondata.check_mas_db) + ' сек')
 
+print(time.ctime(), 'Start import_tsdb')
 read_params()
 txt, result = commondata.login_ksvd()
 if not result:
