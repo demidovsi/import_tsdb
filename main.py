@@ -62,27 +62,20 @@ def read_params():
             for child in root:
                 if child.tag == 'MDMProxy':
                     for ch in child:
-                        if ch.tag == 'InfoCode':
-                            if not commondata.info_code:
-                                commondata.info_code = ch.text
-                        elif ch.tag == 'SchemaName':
-                            if not commondata.schema_name:
-                                commondata.schema_name = ch.text
-                        elif ch.tag == 'URL':
-                            if not commondata.url:
-                                commondata.url = ch.text
-                        elif ch.tag == 'URL_TSDB':
-                            if not commondata.url_tsdb:
-                                commondata.url_tsdb = ch.text
-                        elif ch.tag == 'UserName':
-                            if not commondata.user_name:
-                                commondata.user_name = ch.text
-                        elif ch.tag == 'Password':
-                            if not commondata.password:
-                                commondata.password = ch.text
-                        elif ch.tag == 'Check_mas_db':
-                            if not commondata.check_mas_db:
-                                commondata.check_mas_db = int(ch.text)
+                        if (ch.tag == 'InfoCode') and not commondata.info_code:
+                            commondata.info_code = ch.text
+                        elif (ch.tag == 'SchemaName') and not commondata.schema_name:
+                            commondata.schema_name = ch.text
+                        elif (ch.tag == 'URL') and not commondata.url:
+                            commondata.url = ch.text
+                        elif (ch.tag == 'URL_TSDB') and not commondata.url_tsdb:
+                            commondata.url_tsdb = ch.text
+                        elif (ch.tag == 'UserName') and not commondata.user_name:
+                            commondata.user_name = ch.text
+                        elif (ch.tag == 'Password') and not commondata.password:
+                            commondata.password = ch.text
+                        elif (ch.tag == 'Check_mas_db') and not commondata.check_mas_db:
+                            commondata.check_mas_db = int(ch.text)
     except Exception as e:
         commondata.write_log('ERROR', 'main', f"{e}")
 
@@ -94,33 +87,33 @@ def read_params():
     commondata.write_log('INFO', 'main', 'password=' + commondata.password)
     commondata.write_log('INFO', 'main', 'check_mas_db=' + str(commondata.check_mas_db) + ' сек')
 
-print(time.ctime(), 'Start import_tsdb')
-# read_params()
-# txt, result = commondata.login_ksvd()
-# if not result:
-#     commondata.write_log('FATAL', 'main', time.ctime() +
-#         ' not received token from ' + commondata.url + 'auth/login for username=' + commondata.user_name + '; ' + txt)
-#     while not result:
-#         time.sleep(60)
-#         read_params()
-#         txt, result = commondata.login_ksvd()
-#
-# print(time.ctime(), commondata.token)
-# start_thread()
-# start_thread_post_fact()
-# start_thread_meteo_fact()
-# start_thread_meteo_forecast()
+commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
+read_params()
+txt, result = commondata.login_ksvd()
+if not result:
+    commondata.write_log('FATAL', 'main', time.ctime() +
+        ' not received token from ' + commondata.url + 'auth/login for username=' + commondata.user_name + '; ' + txt)
+    while not result:
+        time.sleep(60)
+        read_params()
+        txt, result = commondata.login_ksvd()
+
+print(time.ctime(), commondata.token)
+start_thread()
+start_thread_post_fact()
+start_thread_meteo_fact()
+start_thread_meteo_forecast()
 while True:
     time.sleep(1)
-    # if not commondata.is_live:
-    #     commondata.write_log('WARN', 'main', 'Cancel Timport')
-    #     start_thread()
-    # if not commondata.is_live_post_fact:
-    #     commondata.write_log('WARN', 'main', 'Cancel TPostFact')
-    #     start_thread_post_fact()
-    # if not commondata.is_live_meteo_fact:
-    #     commondata.write_log('WARN', 'main', 'Cancel TMeteoFact')
-    #     start_thread_meteo_fact()
-    # if not commondata.is_live_meteo_forecast:
-    #     commondata.write_log('WARN', 'main', 'Cancel TMeteoForecast')
-    #     start_thread_meteo_forecast()
+    if not commondata.is_live:
+        commondata.write_log('WARN', 'main', 'Cancel Timport')
+        start_thread()
+    if not commondata.is_live_post_fact:
+        commondata.write_log('WARN', 'main', 'Cancel TPostFact')
+        start_thread_post_fact()
+    if not commondata.is_live_meteo_fact:
+        commondata.write_log('WARN', 'main', 'Cancel TMeteoFact')
+        start_thread_meteo_fact()
+    if not commondata.is_live_meteo_forecast:
+        commondata.write_log('WARN', 'main', 'Cancel TMeteoForecast')
+        start_thread_meteo_forecast()
