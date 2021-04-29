@@ -63,19 +63,26 @@ def read_params():
                 if child.tag == 'MDMProxy':
                     for ch in child:
                         if ch.tag == 'InfoCode':
-                            commondata.info_code = ch.text
+                            if not commondata.info_code:
+                                commondata.info_code = ch.text
                         elif ch.tag == 'SchemaName':
-                            commondata.schema_name = ch.text
+                            if not commondata.schema_name:
+                                commondata.schema_name = ch.text
                         elif ch.tag == 'URL':
-                            commondata.url = ch.text
+                            if not commondata.url:
+                                commondata.url = ch.text
                         elif ch.tag == 'URL_TSDB':
-                            commondata.url_tsdb = ch.text
+                            if not commondata.url_tsdb:
+                                commondata.url_tsdb = ch.text
                         elif ch.tag == 'UserName':
-                            commondata.user_name = ch.text
+                            if not commondata.user_name:
+                                commondata.user_name = ch.text
                         elif ch.tag == 'Password':
-                            commondata.password = ch.text
+                            if not commondata.password:
+                                commondata.password = ch.text
                         elif ch.tag == 'Check_mas_db':
-                            commondata.check_mas_db = int(ch.text)
+                            if not commondata.check_mas_db:
+                                commondata.check_mas_db = int(ch.text)
     except Exception as e:
         commondata.write_log('ERROR', 'main', f"{e}")
 
