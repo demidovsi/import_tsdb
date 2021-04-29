@@ -3,10 +3,10 @@
     <MDMProxy>
         <InfoCode>NSI</InfoCode>
         <SchemaName>test</SchemaName>
-        <URL>http://python-restproxy:5000/</URL>
-        <URL_TSDB>http://au-tsdb:3000/</URL_TSDB>
-        <URL_1>http://127.0.0.1:5000/</URL_1>
-        <URL_TSDB_1>http://127.0.0.1:3001/</URL_TSDB_1>
+        <_URL>http://python-restproxy:5000/</_URL>
+        <_URL_TSDB>http://au-tsdb:3000/</_URL_TSDB>
+        <URL>http://127.0.0.1:5000/</URL>
+        <URL_TSDB>http://127.0.0.1:3001/</URL_TSDB>
 	    <Check_mas_db>30 </Check_mas_db>
         <UserName>user</UserName>
         <Password>!AlteroSmart123</Password>

@@ -79,13 +79,18 @@ def read_params():
     except Exception as e:
         commondata.write_log('ERROR', 'main', f"{e}")
 
-    commondata.write_log('INFO', 'main', 'SchemaName=' + commondata.schema_name)
-    commondata.write_log('INFO', 'main', 'InfoCode=' + commondata.info_code)
-    commondata.write_log('INFO', 'main', 'url_MDM=' + commondata.url)
-    commondata.write_log('INFO', 'main', 'url_TSDB=' + commondata.url_tsdb)
-    commondata.write_log('INFO', 'main', 'user_name=' + commondata.user_name)
-    commondata.write_log('INFO', 'main', 'password=' + commondata.password)
-    commondata.write_log('INFO', 'main', 'check_mas_db=' + str(commondata.check_mas_db) + ' сек')
+    st = 'SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
+         '; url_MDM=' + commondata.url + '; url_TSDB=' + commondata.url_tsdb + \
+         '; user_name=' + commondata.user_name + '; password=' + commondata.password + \
+         '; check_mas_db=' + str(commondata.check_mas_db) + ' сек'
+    commondata.write_log('INFO', 'params', st)
+    # commondata.write_log('INFO', 'main', 'SchemaName=' + commondata.schema_name)
+    # commondata.write_log('INFO', 'main', 'InfoCode=' + commondata.info_code)
+    # commondata.write_log('INFO', 'main', 'url_MDM=' + commondata.url)
+    # commondata.write_log('INFO', 'main', 'url_TSDB=' + commondata.url_tsdb)
+    # commondata.write_log('INFO', 'main', 'user_name=' + commondata.user_name)
+    # commondata.write_log('INFO', 'main', 'password=' + commondata.password)
+    # commondata.write_log('INFO', 'main', 'check_mas_db=' + str(commondata.check_mas_db) + ' сек')
 
 if __name__ == "__main__":
     commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
@@ -98,7 +103,7 @@ if __name__ == "__main__":
             time.sleep(60)
             read_params()
             txt, result = commondata.login_ksvd()
-    print(time.ctime(), commondata.token)
+    # print(time.ctime(), commondata.token)
     start_thread()
     start_thread_post_fact()
     start_thread_meteo_fact()
