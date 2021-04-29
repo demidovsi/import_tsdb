@@ -1,17 +1,11 @@
 <?xml version="1.0" ?>
 <Modeler>
     <MDMProxy>
-        <Host>127.0.0.1</Host>
-        <Port>7000</Port>
-        <OwnHost>127.0.0.1</OwnHost>
-        <OwnPort>5000</OwnPort>
-        <Interval>30</Interval>
         <InfoCode>NSI</InfoCode>
         <SchemaName>test</SchemaName>
-        <TCP_IP>False</TCP_IP>
-        <URL>http://127.0.0.1:5000/</URL>
-        <URL_TSDB>http://127.0.0.1:3001/</URL_TSDB>
-	<Check_mas_db>30 </Check_mas_db>
+        <URL>http://python-restproxy:5000/</URL>
+        <URL_TSDB>http://au-tsdb:3001/</URL_TSDB>
+	    <Check_mas_db>30 </Check_mas_db>
         <UserName>user</UserName>
         <Password>!AlteroSmart123</Password>
     </MDMProxy>
