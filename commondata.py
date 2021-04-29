@@ -113,7 +113,7 @@ def time_for_sql(dt, convert=True) -> str:
 
 def write_log(level: str, src: str, msg: str):
     print(
-        "lvl=" + level + ' ' + 'src="' + str(src).replace('"', "'") + '" msg="' +
+        'lvl=' + level + ' src="' + str(src).replace('"', "'") + '" msg="' +
         str(msg).replace('"', "'") + '"')
 
 
