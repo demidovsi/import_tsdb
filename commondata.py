@@ -36,10 +36,10 @@ def login_ksvd():
             )
     except HTTPError as err:
         data = f'HTTP error occurred: {err}'
-        write_log('ERROR', 'login_ksvd', data)
+        # write_log('ERROR', 'login_ksvd', data)
     except Exception as err:
         data = f'Other error occurred: : {err}'
-        write_log('ERROR', 'login_ksvd', data)
+        # write_log('ERROR', 'login_ksvd', data)
     else:
         try:
             data = response.text
@@ -50,7 +50,7 @@ def login_ksvd():
                 commondata.expires = js["expires"]
         except Exception as err:
             data = f'Error occurred: : {err}'
-            write_log('ERROR', 'login_ksvd', data)
+            # write_log('ERROR', 'login_ksvd', data)
             result = False
     return data, result
 
