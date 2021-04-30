@@ -87,14 +87,20 @@ def read_params():
 if __name__ == "__main__":
     commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
     read_params()
-    txt, result = commondata.login_ksvd()
+    try:
+        txt, result = commondata.login_ksvd()
+    except:
+        result = False
     if not result:
         commondata.write_log('FATAL', 'main', time.ctime() +
             ' not received token from ' + commondata.url + 'auth/login for username=' + commondata.user_name + '; ' + txt)
         while not result:
             time.sleep(60)
             read_params()
-            txt, result = commondata.login_ksvd()
+            try:
+                txt, result = commondata.login_ksvd()
+            except:
+                result = False
     # print(time.ctime(), commondata.token)
     start_thread()
     start_thread_post_fact()
