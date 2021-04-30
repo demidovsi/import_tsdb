@@ -92,8 +92,10 @@ if __name__ == "__main__":
     except:
         result = False
     if not result:
-        commondata.write_log('FATAL', 'main', time.ctime() +
-            ' not received token from ' + commondata.url + 'auth/login for username=' + commondata.user_name + '; ' + txt)
+        commondata.write_log(
+            'FATAL', 'main', time.ctime() +
+            ' not received token from ' + commondata.url + 'auth/login for username=' + commondata.user_name +
+            '; ' + txt)
         while not result:
             time.sleep(60)
             read_params()
