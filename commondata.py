@@ -2,6 +2,7 @@ import requests
 from requests.exceptions import HTTPError
 import json
 import commondata
+import time
 
 
 info_code = "NSI"
@@ -53,6 +54,11 @@ def login_ksvd():
             data = f'Error occurred: : {err}'
             # write_log('ERROR', 'login_ksvd', data)
             result = False
+    if not result:
+        write_log(
+            'ERROR', 'main', time.ctime() +
+            ' not received token from ' + commondata.url + 'auth/login for username=' + commondata.user_name +
+            '; ' + txt)
     return data, result
 
 
