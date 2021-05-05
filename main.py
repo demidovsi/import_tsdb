@@ -1,42 +1,39 @@
 from xml.etree import ElementTree as ET
 import commondata
-import commonthread
+# import commonthread
 import os
 import time
-import postfact
-import meteo_fact
-import meteo_forecast
+# import postfact
+# import meteo_fact
+# import meteo_forecast
 
 
-def start_thread():
-    at = commonthread.TImport()
-    commondata.is_live = True
-    at.start()
-    commondata.write_log('INFO', 'main', 'Start Timport ' + time.ctime())
-
-
-def start_thread_meteo_fact():
-    commondata.MeteoFact = meteo_fact.TMeteoFact()
-    commondata.is_live_meteo_fact = True
-    commondata.MeteoFact.start()
-    commondata.write_log('INFO', 'main', 'Start TMeteoFact ' + time.ctime())
-
-
-def start_thread_meteo_forecast():
-    commondata.MeteoForecast = meteo_forecast.TMeteoForecast()
-    commondata.is_live_meteo_forecast = True
-    commondata.MeteoForecast.start()
-    commondata.write_log('INFO', 'main', 'Start TMeteoForecast ' + time.ctime())
-
-
-def start_thread_post_fact():
-    at = postfact.TPostFact()
-    commondata.is_live_post_fact = True
-    at.start()
-    commondata.write_log('INFO', 'main', 'Start TPostFact ' + time.ctime())
-
-# if __name__ == '__main__':
-    # print(f'Hi word. I am "Import from TSDB"')
+# def start_thread():
+#     at = commonthread.TImport()
+#     commondata.is_live = True
+#     at.start()
+#     commondata.write_log('INFO', 'main', 'Start Timport ' + time.ctime())
+#
+#
+# def start_thread_meteo_fact():
+#     commondata.MeteoFact = meteo_fact.TMeteoFact()
+#     commondata.is_live_meteo_fact = True
+#     commondata.MeteoFact.start()
+#     commondata.write_log('INFO', 'main', 'Start TMeteoFact ' + time.ctime())
+#
+#
+# def start_thread_meteo_forecast():
+#     commondata.MeteoForecast = meteo_forecast.TMeteoForecast()
+#     commondata.is_live_meteo_forecast = True
+#     commondata.MeteoForecast.start()
+#     commondata.write_log('INFO', 'main', 'Start TMeteoForecast ' + time.ctime())
+#
+#
+# def start_thread_post_fact():
+#     at = postfact.TPostFact()
+#     commondata.is_live_post_fact = True
+#     at.start()
+#     commondata.write_log('INFO', 'main', 'Start TPostFact ' + time.ctime())
 
 def read_params():
     try:
@@ -88,34 +85,34 @@ if __name__ == "__main__":
     commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
     read_params()
     result = False
-    try:
-        txt, result = commondata.login_ksvd()
-    except:
-        result = False
+    # try:
+    #     txt, result = commondata.login_ksvd()
+    # except:
+    #     result = False
     if not result:
         while not result:
             commondata.write_log('INFO', 'main', 'Sleep 60 seconds')
             time.sleep(60)
             read_params()
-            try:
-                txt, result = commondata.login_ksvd()
-            except:
-                result = False
-    start_thread()
-    start_thread_post_fact()
-    start_thread_meteo_fact()
-    start_thread_meteo_forecast()
-    while True:
-        time.sleep(1)
-        if not commondata.is_live:
-            commondata.write_log('WARN', 'main', 'Cancel Timport')
-            start_thread()
-        if not commondata.is_live_post_fact:
-            commondata.write_log('WARN', 'main', 'Cancel TPostFact')
-            start_thread_post_fact()
-        if not commondata.is_live_meteo_fact:
-            commondata.write_log('WARN', 'main', 'Cancel TMeteoFact')
-            start_thread_meteo_fact()
-        if not commondata.is_live_meteo_forecast:
-            commondata.write_log('WARN', 'main', 'Cancel TMeteoForecast')
-            start_thread_meteo_forecast()
+            # try:
+            #     txt, result = commondata.login_ksvd()
+            # except:
+            #     result = False
+    # start_thread()
+    # start_thread_post_fact()
+    # start_thread_meteo_fact()
+    # start_thread_meteo_forecast()
+    # while True:
+    #     time.sleep(1)
+    #     if not commondata.is_live:
+    #         commondata.write_log('WARN', 'main', 'Cancel Timport')
+    #         start_thread()
+    #     if not commondata.is_live_post_fact:
+    #         commondata.write_log('WARN', 'main', 'Cancel TPostFact')
+    #         start_thread_post_fact()
+    #     if not commondata.is_live_meteo_fact:
+    #         commondata.write_log('WARN', 'main', 'Cancel TMeteoFact')
+    #         start_thread_meteo_fact()
+    #     if not commondata.is_live_meteo_forecast:
+    #         commondata.write_log('WARN', 'main', 'Cancel TMeteoForecast')
+    #         start_thread_meteo_forecast()
