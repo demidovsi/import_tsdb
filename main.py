@@ -1,5 +1,5 @@
-from xml.etree import ElementTree as ET
-import commondata
+# from xml.etree import ElementTree as ET
+# import commondata
 # import commonthread
 import os
 import time
@@ -35,55 +35,58 @@ import time
 #     at.start()
 #     commondata.write_log('INFO', 'main', 'Start TPostFact ' + time.ctime())
 
-def read_params():
-    try:
-        commondata.info_code = os.environ.get("MDMPROXY_INFO_CODE")
-        if not commondata.info_code:
-            commondata.info_code = 'nsi'
-        commondata.schema_name = os.environ.get("MDMPROXY_SCHEMA_NAME")
-        if not commondata.schema_name:
-            commondata.schema_name = 'bms'
-        commondata.url = os.environ.get("MDMPROXY_URL")
-        commondata.url_tsdb = os.environ.get("MDMPROXY_URL_TSDB")
-        commondata.user_name = os.environ.get("MDMPROXY_USER_NAME")
-        commondata.password = os.environ.get("MDMPROXY_PASSWORD")
-        st = os.environ.get("MDMPROXY_CHECK_MAS_DB")
-        if st:
-            commondata.check_mas_db = int(st)
-        if not st:
-            commondata.check_mas_db = 60
-        f = open('config.xml', 'r', encoding='utf-8')
-        with f:
-            data = f.read()
-            root = ET.fromstring(data)
-            for child in root:
-                if child.tag == 'MDMProxy':
-                    for ch in child:
-                        if (ch.tag == 'InfoCode') and not commondata.info_code:
-                            commondata.info_code = ch.text
-                        elif (ch.tag == 'SchemaName') and not commondata.schema_name:
-                            commondata.schema_name = ch.text
-                        elif (ch.tag == 'URL') and not commondata.url:
-                            commondata.url = ch.text
-                        elif (ch.tag == 'URL_TSDB') and not commondata.url_tsdb:
-                            commondata.url_tsdb = ch.text
-                        elif (ch.tag == 'UserName') and not commondata.user_name:
-                            commondata.user_name = ch.text
-                        elif (ch.tag == 'Password') and not commondata.password:
-                            commondata.password = ch.text
-                        elif (ch.tag == 'Check_mas_db') and not commondata.check_mas_db:
-                            commondata.check_mas_db = int(ch.text)
-        st = 'SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
-             '; url_MDM=' + commondata.url + '; url_TSDB=' + commondata.url_tsdb + \
-             '; user_name=' + commondata.user_name + '; password=' + commondata.password + \
-             '; check_mas_db=' + str(commondata.check_mas_db) + ' сек'
-        commondata.write_log('INFO', 'params', st)
-    except Exception as e:
-        commondata.write_log('ERROR', 'main', f"{e}")
+# def read_params():
+#     try:
+#         commondata.info_code = os.environ.get("MDMPROXY_INFO_CODE")
+#         if not commondata.info_code:
+#             commondata.info_code = 'nsi'
+#         commondata.schema_name = os.environ.get("MDMPROXY_SCHEMA_NAME")
+#         if not commondata.schema_name:
+#             commondata.schema_name = 'bms'
+#         commondata.url = os.environ.get("MDMPROXY_URL")
+#         commondata.url_tsdb = os.environ.get("MDMPROXY_URL_TSDB")
+#         commondata.user_name = os.environ.get("MDMPROXY_USER_NAME")
+#         commondata.password = os.environ.get("MDMPROXY_PASSWORD")
+#         st = os.environ.get("MDMPROXY_CHECK_MAS_DB")
+#         if st:
+#             commondata.check_mas_db = int(st)
+#         if not st:
+#             commondata.check_mas_db = 60
+#         f = open('config.xml', 'r', encoding='utf-8')
+#         with f:
+#             data = f.read()
+#             root = ET.fromstring(data)
+#             for child in root:
+#                 if child.tag == 'MDMProxy':
+#                     for ch in child:
+#                         if (ch.tag == 'InfoCode') and not commondata.info_code:
+#                             commondata.info_code = ch.text
+#                         elif (ch.tag == 'SchemaName') and not commondata.schema_name:
+#                             commondata.schema_name = ch.text
+#                         elif (ch.tag == 'URL') and not commondata.url:
+#                             commondata.url = ch.text
+#                         elif (ch.tag == 'URL_TSDB') and not commondata.url_tsdb:
+#                             commondata.url_tsdb = ch.text
+#                         elif (ch.tag == 'UserName') and not commondata.user_name:
+#                             commondata.user_name = ch.text
+#                         elif (ch.tag == 'Password') and not commondata.password:
+#                             commondata.password = ch.text
+#                         elif (ch.tag == 'Check_mas_db') and not commondata.check_mas_db:
+#                             commondata.check_mas_db = int(ch.text)
+#         st = 'SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
+#              '; url_MDM=' + commondata.url + '; url_TSDB=' + commondata.url_tsdb + \
+#              '; user_name=' + commondata.user_name + '; password=' + commondata.password + \
+#              '; check_mas_db=' + str(commondata.check_mas_db) + ' сек'
+#         # commondata.write_log('INFO', 'params', st)
+#         print('params', st)
+#     except Exception as e:
+#         commondata.write_log('ERROR', 'main', f"{e}")
 
 if __name__ == "__main__":
-    commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
-    read_params()
+    # commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
+    print(time.ctime() + ' Start import_tsdb')
+
+    # read_params()
     result = False
     # try:
     #     txt, result = commondata.login_ksvd()
@@ -91,9 +94,10 @@ if __name__ == "__main__":
     #     result = False
     if not result:
         while not result:
-            commondata.write_log('INFO', 'main', 'Sleep 60 seconds')
+            # commondata.write_log('INFO', 'main', time.ctime() + ': Sleep 60 seconds')
+            print(time.ctime() + ': Sleep 60 seconds')
             time.sleep(60)
-            read_params()
+            # read_params()
             # try:
             #     txt, result = commondata.login_ksvd()
             # except:
