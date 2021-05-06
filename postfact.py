@@ -14,7 +14,7 @@ class PostFact(threading.Thread):
         self.time_check = 0  # время последней проверки базы данных
 
     def run(self):
-        while True:
+        while not self.needStop:
             tek_time = time.time()
             try:
                 if tek_time - self.time_check >= commondata.check_mas_db * 2:

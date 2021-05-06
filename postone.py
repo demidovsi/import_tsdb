@@ -36,35 +36,36 @@ class TPostOne(threading.Thread):
 
     def run(self):
         for mas in commondata.mas_js:
-            try:
-                if (mas['typeobj_code'] == self.typeobj_code) and \
-                        (mas['param_code'] == self.param_code) and (not self.id or (mas["id"] in self.id)):
-                    discret = int(mas["discret"])
-                    t0 = self.dt_beg // discret * discret
-                    t1 = self.dt_end // discret * discret
-                    while t0 <= t1:
-                        # запишем, что приняли в работу
+            while not self.needStop:
+                try:
+                    if (mas['typeobj_code'] == self.typeobj_code) and \
+                            (mas['param_code'] == self.param_code) and (not self.id or (mas["id"] in self.id)):
+                        discret = int(mas["discret"])
+                        t0 = self.dt_beg // discret * discret
+                        t1 = self.dt_end // discret * discret
+                        while t0 <= t1:
+                            # запишем, что приняли в работу
+                            txt, result = commondata.send_rest(
+                                'Entity.SetValue/config?param_code=value_string' +
+                                '&value=' + self.init_id +
+                                '~LF~' + time.strftime('t_beg=%Y-%m-%d %H:%M:%S', time.localtime(self.dt_beg)) +
+                                '~LF~' + time.strftime('t_end=%Y-%m-%d %H:%M:%S', time.localtime(self.dt_end)) +
+                                time.strftime('~LF~work for=%Y-%m-%d %H:%M:%S', time.localtime(t0)) +
+                                '&where=sh_name="' + self.typeobj_code + '_' + self.param_code + '"')
+                            if not result:
+                                commondata.write_log('ERROR ', 'TPostFact.run', txt)
+                            work_one_time(t0, discret, mas["equipment_id"], mas["parameter_id"], self.typeobj_code,
+                                          self.param_code, mas["id"])
+                            t0 = t0 + discret
+                        # запишем, что закончили работу
                         txt, result = commondata.send_rest(
                             'Entity.SetValue/config?param_code=value_string' +
-                            '&value=' + self.init_id +
-                            '~LF~' + time.strftime('t_beg=%Y-%m-%d %H:%M:%S', time.localtime(self.dt_beg)) +
-                            '~LF~' + time.strftime('t_end=%Y-%m-%d %H:%M:%S', time.localtime(self.dt_end)) +
-                            time.strftime('~LF~work for=%Y-%m-%d %H:%M:%S', time.localtime(t0)) +
+                            '&value=' +
                             '&where=sh_name="' + self.typeobj_code + '_' + self.param_code + '"')
                         if not result:
-                            commondata.write_log('ERROR ', 'TPostFact.run', txt)
-                        work_one_time(t0, discret, mas["equipment_id"], mas["parameter_id"], self.typeobj_code,
-                                      self.param_code, mas["id"])
-                        t0 = t0 + discret
-                    # запишем, что закончили работу
-                    txt, result = commondata.send_rest(
-                        'Entity.SetValue/config?param_code=value_string' +
-                        '&value=' +
-                        '&where=sh_name="' + self.typeobj_code + '_' + self.param_code + '"')
-                    if not result:
-                        commondata.write_log('WARN', 'TPostOne.run', txt)
-            except:
-                pass
+                            commondata.write_log('WARN', 'TPostOne.run', txt)
+                except:
+                    pass
 
 def work_one_time(tek_time, discret, equipment_id, parameter_id, typeobj_code, param_code, id):
     t_beg = int(tek_time - discret) * 1000000

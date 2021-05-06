@@ -6,34 +6,35 @@ import time
 import postfact
 import meteo_fact
 import meteo_forecast
+import datetime
 
 
 def start_thread():
     at = commonthread.Import()
     commondata.is_live = True
     at.start()
-    commondata.write_log('INFO', 'main', 'Start Timport ' + time.ctime())
+    commondata.write_log('INFO', 'main', 'Start thread Import ' + time.ctime())
 
 
 def start_thread_meteo_fact():
     commondata.MeteoFact = meteo_fact.MeteoFact()
     commondata.is_live_meteo_fact = True
     commondata.MeteoFact.start()
-    commondata.write_log('INFO', 'main', 'Start TMeteoFact ' + time.ctime())
+    commondata.write_log('INFO', 'main', 'Start thread MeteoFact ' + time.ctime())
 
 
 def start_thread_meteo_forecast():
     commondata.MeteoForecast = meteo_forecast.MeteoForecast()
     commondata.is_live_meteo_forecast = True
     commondata.MeteoForecast.start()
-    commondata.write_log('INFO', 'main', 'Start TMeteoForecast ' + time.ctime())
+    commondata.write_log('INFO', 'main', 'Start thread MeteoForecast ' + time.ctime())
 
 
 def start_thread_post_fact():
     at = postfact.PostFact()
     commondata.is_live_post_fact = True
     at.start()
-    commondata.write_log('INFO', 'main', 'Start TPostFact ' + time.ctime())
+    commondata.write_log('INFO', 'main', 'Start thread PostFact ' + time.ctime())
 
 def read_params():
     try:
@@ -75,7 +76,7 @@ def read_params():
                             commondata.check_mas_db = int(ch.text)
         st = 'Enviroments: SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
              '; url_MDM=' + commondata.url + '; url_TSDB=' + commondata.url_tsdb + \
-             '; check_mas_db=' + str(commondata.check_mas_db) + ' сек'
+             '; check_mas_db=' + str(commondata.check_mas_db) + ' sec'
         commondata.write_log('INFO', 'params', st)
     except Exception as e:
         commondata.write_log('ERROR', 'main', f"{e}")
@@ -92,6 +93,9 @@ def make_login():
         time.sleep(60)
         make_login()
 
+def get_value_time(t):
+    return t.hour * 3600 + t.minute * 60 + t.second + t.microsecond // 1000 / 1000
+
 if __name__ == "__main__":
     commondata.write_log('WARN', 'main', time.ctime() + ' Start import_tsdb')
     make_login()
@@ -100,20 +104,22 @@ if __name__ == "__main__":
     start_thread_meteo_fact()
     start_thread_meteo_forecast()
     tek_time = time.time()
+    time_begin = datetime.datetime.now()
     while True:
         time.sleep(1)
         if not commondata.is_live:
-            commondata.write_log('WARN', 'main', 'Cancel Timport')
+            commondata.write_log('WARN', 'main', 'Cancel thread Import')
             start_thread()
         if not commondata.is_live_post_fact:
-            commondata.write_log('WARN', 'main', 'Cancel TPostFact')
+            commondata.write_log('WARN', 'main', 'Cancel thread PostFact')
             start_thread_post_fact()
         if not commondata.is_live_meteo_fact:
-            commondata.write_log('WARN', 'main', 'Cancel TMeteoFact')
+            commondata.write_log('WARN', 'main', 'Cancel thread MeteoFact')
             start_thread_meteo_fact()
         if not commondata.is_live_meteo_forecast:
-            commondata.write_log('WARN', 'main', 'Cancel TMeteoForecast')
+            commondata.write_log('WARN', 'main', 'Cancel thread MeteoForecast')
             start_thread_meteo_forecast()
-        if time.time() - tek_time >= 600:
+        if time.time() - tek_time >= 300:
             tek_time = time.time()
-            commondata.write_log('INFO', 'Live', 'Servis working')
+            d = get_value_time(datetime.datetime.now()) - get_value_time(time_begin)
+            commondata.write_log('INFO', 'Live', time.ctime() + ' The Servis import-tsdb works for ' + "%.3f" % d + ' sec')
