@@ -74,13 +74,13 @@ class Import(threading.Thread):
                                     if not result or ('error_sql' in txt):
                                         commondata.count_error = commondata.count_error + 1
                                         commondata.write_log('WARN', 'Timport.run', txt)
-                                    else:
-                                        commondata.write_log(
-                                            'DEBUG', 'Timport.run', mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
-                                            mas["param_code"] + ' ' + str(discret) + ' ' + str(val) + ' ' +
-                                            time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
-                                            "; count=" + str(count) + '; tek=' + time.ctime() + '; t=' + str(toper)
-                                        )
+                                    # else:
+                                    #     commondata.write_log(
+                                    #         'DEBUG', 'Timport.run', mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
+                                    #         mas["param_code"] + ' ' + str(discret) + ' ' + str(val) + ' ' +
+                                    #         time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
+                                    #         "; count=" + str(count) + '; tek=' + time.ctime() + '; t=' + str(toper)
+                                    #     )
                             else:
                                 commondata.count_error = commondata.count_error + 1
                     except Exception as err:
