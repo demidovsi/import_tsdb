@@ -28,7 +28,7 @@ MeteoForecast = None
 
 def login_ksvd():
     result = False
-    write_log('DEBUG', 'login_ksvd', "url=" + url + "; username=" + user_name + "; password=" + password)
+    write_log('DEBUG', 'login_ksvd', "Params for login: url=" + url + "; username=" + user_name + "; password=" + password)
     # txt_z = {"username": user_name, "password": password, "rememberMe": True}
     try:
         headers = {"Accept": "application/json"}

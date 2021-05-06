@@ -73,7 +73,7 @@ def read_params():
                             commondata.password = ch.text
                         elif (ch.tag == 'Check_mas_db') and not commondata.check_mas_db:
                             commondata.check_mas_db = int(ch.text)
-        st = 'SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
+        st = 'Enviroments: SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
              '; url_MDM=' + commondata.url + '; url_TSDB=' + commondata.url_tsdb + \
              '; user_name=' + commondata.user_name + '; password=' + commondata.password + \
              '; check_mas_db=' + str(commondata.check_mas_db) + ' сек'
@@ -89,7 +89,7 @@ def make_login():
     except:
         pass
     if not result:
-        commondata.write_log('INFO', 'main', time.ctime() + ': Sleep 60 seconds')
+        commondata.write_log('INFO', 'main', 'Wait good login: ' + time.ctime() + ' Sleep 60 seconds')
         time.sleep(60)
         make_login()
 
