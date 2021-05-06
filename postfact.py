@@ -4,7 +4,7 @@ import threading
 import json
 import postone
 
-class TPostFact(threading.Thread):
+class PostFact(threading.Thread):
     needStop = False
     time_check = None
 

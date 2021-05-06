@@ -98,14 +98,14 @@ def work_one_time(tek_time, discret, equipment_id, parameter_id, typeobj_code, p
                     str(id) + '?value=' + str(val) + '&dt=' + dt, 'POST')
                 if not result:
                     commondata.count_error = commondata.count_error + 1
-                    commondata.write_log('WARN', 'work_one_time', txt)
-                else:
-                    commondata.write_log(
-                        'DEBUG', 'work_one_time', str(id) + ' ' + typeobj_code + ' ' +
-                        param_code + ' ' + str(discret) + ' ' + str(val) + ' ' +
-                        time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
-                        "; count=" + str(count) + '; tek=' + time.ctime() + '; t=' + str(toper)
-                    )
+                    commondata.write_log('ERROR', 'work_one_time', txt)
+                # else:
+                #     commondata.write_log(
+                #         'DEBUG', 'work_one_time', str(id) + ' ' + typeobj_code + ' ' +
+                #         param_code + ' ' + str(discret) + ' ' + str(val) + ' ' +
+                #         time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
+                #         "; count=" + str(count) + '; tek=' + time.ctime() + '; t=' + str(toper)
+                #     )
         except Exception as err:
             commondata.count_error = commondata.count_error + 1
             commondata.write_log(

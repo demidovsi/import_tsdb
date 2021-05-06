@@ -9,28 +9,28 @@ import meteo_forecast
 
 
 def start_thread():
-    at = commonthread.TImport()
+    at = commonthread.Import()
     commondata.is_live = True
     at.start()
     commondata.write_log('INFO', 'main', 'Start Timport ' + time.ctime())
 
 
 def start_thread_meteo_fact():
-    commondata.MeteoFact = meteo_fact.TMeteoFact()
+    commondata.MeteoFact = meteo_fact.MeteoFact()
     commondata.is_live_meteo_fact = True
     commondata.MeteoFact.start()
     commondata.write_log('INFO', 'main', 'Start TMeteoFact ' + time.ctime())
 
 
 def start_thread_meteo_forecast():
-    commondata.MeteoForecast = meteo_forecast.TMeteoForecast()
+    commondata.MeteoForecast = meteo_forecast.MeteoForecast()
     commondata.is_live_meteo_forecast = True
     commondata.MeteoForecast.start()
     commondata.write_log('INFO', 'main', 'Start TMeteoForecast ' + time.ctime())
 
 
 def start_thread_post_fact():
-    at = postfact.TPostFact()
+    at = postfact.PostFact()
     commondata.is_live_post_fact = True
     at.start()
     commondata.write_log('INFO', 'main', 'Start TPostFact ' + time.ctime())
@@ -99,6 +99,7 @@ if __name__ == "__main__":
     start_thread_post_fact()
     start_thread_meteo_fact()
     start_thread_meteo_forecast()
+    tek_time = time.time()
     while True:
         time.sleep(1)
         if not commondata.is_live:
@@ -113,3 +114,6 @@ if __name__ == "__main__":
         if not commondata.is_live_meteo_forecast:
             commondata.write_log('WARN', 'main', 'Cancel TMeteoForecast')
             start_thread_meteo_forecast()
+        if time.time() - tek_time >= 600:
+            tek_time = time.time()
+            commondata.write_log('INFO', 'Live', 'Servis working')

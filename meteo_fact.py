@@ -7,7 +7,7 @@ import requests
 from requests.exceptions import HTTPError
 
 
-class TMeteoFact(threading.Thread):
+class MeteoFact(threading.Thread):
     needStop = False
     url = ''
     api_id = None
@@ -66,15 +66,15 @@ class TMeteoFact(threading.Thread):
                             txt, result = commondata.send_rest(txt, 'POST')
                             if not result or ('error_sql' in txt):
                                 commondata.count_error = commondata.count_error + 1
-                                commondata.write_log('WARN', 'TMeteoFact', time.ctime() + ' ' + txt)
-                            else:
-                                commondata.write_log(
-                                    'DEBUG', 'TMeteoFact', str(mas["id"]) + ' ' + mas["typeobj_code"] + ' ' +
-                                    mas["param_code"] + ' ' + str(discret) + ' ' +
-                                    time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
-                                    '; x=' + str(mas["x"]) + '; y=' + str(mas["y"]) +
-                                    '; tek=' + time.ctime() + '; t=' + str(toper)
-                                )
+                                commondata.write_log('ERROR', 'TMeteoFact', time.ctime() + ' ' + txt)
+                            # else:
+                            #     commondata.write_log(
+                            #         'DEBUG', 'TMeteoFact', str(mas["id"]) + ' ' + mas["typeobj_code"] + ' ' +
+                            #         mas["param_code"] + ' ' + str(discret) + ' ' +
+                            #         time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
+                            #         '; x=' + str(mas["x"]) + '; y=' + str(mas["y"]) +
+                            #         '; tek=' + time.ctime() + '; t=' + str(toper)
+                            #     )
                     except Exception as err:
                         commondata.count_error = commondata.count_error + 1
                         commondata.write_log(

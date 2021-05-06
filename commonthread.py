@@ -5,7 +5,7 @@ import time
 import datetime
 
 
-class TImport(threading.Thread):
+class Import(threading.Thread):
     needStop = False
     time_check = None
     time_login = None
@@ -15,8 +15,8 @@ class TImport(threading.Thread):
         self.daemon = True
         commondata.count_error = 0
         commondata.txt, result = self.get_params()
-        if result:
-            self.print_params()
+        # if result:
+        #     self.print_params()
         self.time_check = time.time()  # время последней проверки базы данных
 
     def get_params(self):
@@ -100,7 +100,7 @@ class TImport(threading.Thread):
                             commondata.mas_js = json.loads(commondata.txt)[0]
                             commondata.write_log(
                                 'WARN', 'Timport.run', time.ctime() + ' check_mas_db - приняты изменения')
-                            self.print_params()
+                            # self.print_params()
                     self.time_check = time.time()
                 else:
                     if time.time() - time_login >= 3600:  #  прошел час
