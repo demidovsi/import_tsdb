@@ -50,6 +50,7 @@ def login_ksvd():
                 js = json.loads(data)
                 commondata.token = js["accessToken"]
                 commondata.expires = js["expires"]
+                write_log('DEBUG', 'token', commondata.token)
         except Exception as err:
             data = f'Error occurred: : {err}'
             # write_log('ERROR', 'login_ksvd', data)
