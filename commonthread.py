@@ -15,8 +15,8 @@ class Import(threading.Thread):
         self.daemon = True
         commondata.count_error = 0
         commondata.txt, result = self.get_params()
-        # if result:
-        #     self.print_params()
+        if result:
+            self.print_params()
         self.time_check = time.time()  # время последней проверки базы данных
 
     def get_params(self):
@@ -26,8 +26,8 @@ class Import(threading.Thread):
     def print_params(self):
         js = json.loads(commondata.txt)
         commondata.mas_js = js[0]
-        for mas in commondata.mas_js:
-            commondata.write_log('DEBUG', 'Timport.print_params', mas)
+        # for mas in commondata.mas_js:
+        #     commondata.write_log('DEBUG', 'Timport.print_params', mas)
 
     def run(self):
         try:
@@ -100,7 +100,7 @@ class Import(threading.Thread):
                             commondata.mas_js = json.loads(commondata.txt)[0]
                             commondata.write_log(
                                 'WARN', 'Timport.run', time.ctime() + ' check_mas_db - приняты изменения')
-                            # self.print_params()
+                            self.print_params()
                     self.time_check = time.time()
                 else:
                     if time.time() - time_login >= 3600:  #  прошел час
