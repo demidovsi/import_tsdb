@@ -83,6 +83,9 @@ import time
 
 if __name__ == "__main__":
     commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
+    while True:
+        time.sleep(10)
+        commondata.write_log('INFO', 'main', time.ctime() + ' after sleep')
 
     # read_params()
     # result = False
