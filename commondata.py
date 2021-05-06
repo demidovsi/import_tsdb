@@ -28,7 +28,7 @@ MeteoForecast = None
 
 def login_ksvd():
     result = False
-    write_log('DEBUG', 'login_ksvd', "Params for login: url=" + url + "; username=" + user_name + "; password=" + password)
+    # write_log('DEBUG', 'login_ksvd', "Params for login: url=" + url + "; username=" + user_name + "; password=" + password)
     # txt_z = {"username": user_name, "password": password, "rememberMe": True}
     try:
         headers = {"Accept": "application/json"}
@@ -50,7 +50,7 @@ def login_ksvd():
                 js = json.loads(data)
                 commondata.token = js["accessToken"]
                 commondata.expires = js["expires"]
-                write_log('DEBUG', 'token', commondata.token)
+                # write_log('DEBUG', 'token', commondata.token)
         except Exception as err:
             data = f'Error occurred: : {err}'
             # write_log('ERROR', 'login_ksvd', data)

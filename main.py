@@ -75,7 +75,6 @@ def read_params():
                             commondata.check_mas_db = int(ch.text)
         st = 'Enviroments: SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
              '; url_MDM=' + commondata.url + '; url_TSDB=' + commondata.url_tsdb + \
-             '; user_name=' + commondata.user_name + '; password=' + commondata.password + \
              '; check_mas_db=' + str(commondata.check_mas_db) + ' сек'
         commondata.write_log('INFO', 'params', st)
     except Exception as e:
