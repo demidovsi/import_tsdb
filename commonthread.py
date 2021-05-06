@@ -73,7 +73,7 @@ class Import(threading.Thread):
                                         str(mas["id"]) + '?value=' + str(val) + '&dt=' + st, 'POST')
                                     if not result or ('error_sql' in txt):
                                         commondata.count_error = commondata.count_error + 1
-                                        commondata.write_log('WARN', 'Timport.run', txt)
+                                        commondata.write_log('WARN', 'Import.run', txt)
                                     # else:
                                     #     commondata.write_log(
                                     #         'DEBUG', 'Timport.run', mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
@@ -86,7 +86,7 @@ class Import(threading.Thread):
                     except Exception as err:
                         commondata.count_error = commondata.count_error + 1
                         commondata.write_log(
-                            'ERROR ', 'Timport.run', f"{err}" + ' ' + mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
+                            'ERROR ', 'Import.run', f"{err}" + ' ' + mas["id"] + ' ' + mas["typeobj_code"] + ' ' +
                             mas["param_code"] + ' ' + str(mas["discret"]))
                 # цикл по параметрам закончен
                 if tek_time - self.time_check >= commondata.check_mas_db:
@@ -99,18 +99,18 @@ class Import(threading.Thread):
                             commondata.txt = txt
                             commondata.mas_js = json.loads(commondata.txt)[0]
                             commondata.write_log(
-                                'WARN', 'Timport.run', time.ctime() + ' check_mas_db - приняты изменения')
+                                'WARN', 'Import.run', time.ctime() + ' check_mas_db - приняты изменения')
                             self.print_params()
                     self.time_check = time.time()
                 else:
                     if time.time() - time_login >= 3600:  #  прошел час
                         commondata.write_log(
-                            'WARN', 'Timport.run', time.ctime() + 'login_ksvd')
+                            'DEBUG', 'Import.run', time.ctime() + ' login_ksvd every hour')
                         # print(time.ctime(), commondata.token)
                         commondata.login_ksvd()
                         time_login = time.time()
                 time.sleep(1)
                 tek_time = time.time()
         except Exception as err:
-            commondata.write_log('FATAL ', 'Timport.run', f"{err}")
+            commondata.write_log('FATAL ', 'Import.run', f"{err}")
         commondata.is_live = False

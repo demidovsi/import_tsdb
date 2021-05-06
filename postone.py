@@ -4,7 +4,7 @@ import threading
 import json
 
 
-class TPostOne(threading.Thread):
+class PostOne(threading.Thread):
     needStop = False
     typeobj_code = None
     param_code = None
@@ -63,7 +63,7 @@ class TPostOne(threading.Thread):
                             '&value=' +
                             '&where=sh_name="' + self.typeobj_code + '_' + self.param_code + '"')
                         if not result:
-                            commondata.write_log('WARN', 'TPostOne.run', txt)
+                            commondata.write_log('WARN', 'PostOne.run', txt)
                 except:
                     pass
 

@@ -74,7 +74,7 @@ def read_params():
                             commondata.password = ch.text
                         elif (ch.tag == 'Check_mas_db') and not commondata.check_mas_db:
                             commondata.check_mas_db = int(ch.text)
-        st = 'Enviroments: SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
+        st = 'Environments: SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
              '; url_MDM=' + commondata.url + '; url_TSDB=' + commondata.url_tsdb + \
              '; check_mas_db=' + str(commondata.check_mas_db) + ' sec'
         commondata.write_log('INFO', 'params', st)

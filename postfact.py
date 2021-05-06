@@ -47,14 +47,14 @@ class PostFact(threading.Thread):
                                             t_beg, t_end = commondata.getpole(mt, '~LF~')
                                             t_end, work = commondata.getpole(t_end, '~LF~')
                                             if not work or (work == ""):  # можно запускать поток
-                                                at = postone.TPostOne(typeobj_code, param_code, t_beg, t_end, id)
+                                                at = postone.PostOne(typeobj_code, param_code, t_beg, t_end, id)
                                                 at.start()
 
                     self.time_check = time.time()
                 time.sleep(1)
 
             except Exception as err:
-                commondata.write_log('FATAL ', 'TPostFact.run', f"{err}")
+                commondata.write_log('FATAL ', 'PostFact.run', f"{err}")
                 self.time_check = time.time()
         commondata.is_live_post_fact = False
 

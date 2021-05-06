@@ -66,10 +66,10 @@ class MeteoFact(threading.Thread):
                             txt, result = commondata.send_rest(txt, 'POST')
                             if not result or ('error_sql' in txt):
                                 commondata.count_error = commondata.count_error + 1
-                                commondata.write_log('ERROR', 'TMeteoFact', time.ctime() + ' ' + txt)
+                                commondata.write_log('ERROR', 'MeteoFact', time.ctime() + ' ' + txt)
                             # else:
                             #     commondata.write_log(
-                            #         'DEBUG', 'TMeteoFact', str(mas["id"]) + ' ' + mas["typeobj_code"] + ' ' +
+                            #         'DEBUG', 'MeteoFact', str(mas["id"]) + ' ' + mas["typeobj_code"] + ' ' +
                             #         mas["param_code"] + ' ' + str(discret) + ' ' +
                             #         time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
                             #         '; x=' + str(mas["x"]) + '; y=' + str(mas["y"]) +
@@ -78,7 +78,7 @@ class MeteoFact(threading.Thread):
                     except Exception as err:
                         commondata.count_error = commondata.count_error + 1
                         commondata.write_log(
-                            'ERROR ', 'TMeteoFact.run', time.ctime() + ' ' + f"{err}" + ' ' + mas["id"] +
+                            'ERROR ', 'MeteoFact.run', time.ctime() + ' ' + f"{err}" + ' ' + mas["id"] +
                                                         ';' + mas["typeobj_code"] + '; ' + mas["param_code"] +
                                                         '; x=' + str(mas["x"]) +
                                                         '; y=' + str(mas["y"]) + '; ' + str(mas["discret"]))
@@ -86,6 +86,6 @@ class MeteoFact(threading.Thread):
                 tek_time = time.time()
 
         except Exception as err:
-            commondata.write_log('FATAL ', 'TMeteoFact.run', time.ctime() + ' ' + f"{err}")
+            commondata.write_log('FATAL ', 'MeteoFact.run', time.ctime() + ' ' + f"{err}")
         commondata.is_live_meteo_fact = False
 

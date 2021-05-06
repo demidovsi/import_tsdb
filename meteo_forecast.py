@@ -67,12 +67,12 @@ class MeteoForecast(threading.Thread):
                                 txt, result = commondata.send_rest(txt, 'POST')
                                 if not result or ('error_sql' in txt):
                                     commondata.count_error = commondata.count_error + 1
-                                    commondata.write_log('ERROR', 'TMeteoForecast', time.ctime() + ' ' + txt)
+                                    commondata.write_log('ERROR', 'MeteoForecast', time.ctime() + ' ' + txt)
                                     txt_result = 'ERROR'
                                     break
                             toper = time.time() - toper
                             # commondata.write_log(
-                            #     txt_result, 'TMeteoForecast', str(mas["id"]) + ' ' + mas["typeobj_code"] +
+                            #     txt_result, 'MeteoForecast', str(mas["id"]) + ' ' + mas["typeobj_code"] +
                             #     ' ' + mas["param_code"] + ' ' + str(discret) + ' ' +
                             #     time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
                             #     '; tek=' + time.ctime() + '; t=' + str(toper)
@@ -80,7 +80,7 @@ class MeteoForecast(threading.Thread):
                     except Exception as err:
                         commondata.count_error = commondata.count_error + 1
                         commondata.write_log(
-                            'ERROR ', 'TMeteoForecast.run', time.ctime() + ' ' + f"{err}" + ' ' + mas["id"] +
+                            'ERROR ', 'MeteoForecast.run', time.ctime() + ' ' + f"{err}" + ' ' + mas["id"] +
                                                         ';' + mas["typeobj_code"] + '; ' + mas["param_code"] +
                                                         '; x=' + str(mas["x"]) +
                                                         '; y=' + str(mas["y"]) + '; ' + str(mas["discret"]))
@@ -88,6 +88,6 @@ class MeteoForecast(threading.Thread):
                 tek_time = time.time()
 
         except Exception as err:
-            commondata.write_log('FATAL ', 'TMeteoForecast.run', time.ctime() + ' ' + f"{err}")
+            commondata.write_log('FATAL ', 'MeteoForecast.run', time.ctime() + ' ' + f"{err}")
         commondata.is_live_meteo_forecast = False
 
