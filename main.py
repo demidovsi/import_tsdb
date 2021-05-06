@@ -93,8 +93,11 @@ def make_login():
         time.sleep(60)
         make_login()
 
+def customEvent(self, evt):
+    print(evt)
+
 if __name__ == "__main__":
-    commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
+    commondata.write_log('WARN', 'main', time.ctime() + ' Start import_tsdb')
     make_login()
     start_thread()
     start_thread_post_fact()

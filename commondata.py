@@ -33,7 +33,7 @@ def login_ksvd():
     try:
         headers = {"Accept": "application/json"}
         response = requests.request(
-            'POST', url + 'auth/login', headers=headers, timeout=10,
+            'POST', url + 'auth/login', headers=headers, timeout=100,
             json={"username": user_name, "password": password, "rememberMe": True}
             )
     except HTTPError as err:
@@ -57,7 +57,7 @@ def login_ksvd():
             result = False
     if not result:
         write_log(
-            'ERROR', 'main', time.ctime() +
+            'ERROR', 'main', 'Error login: ' + time.ctime() +
             ' not received token from ' + commondata.url + 'auth/login for username=' + commondata.user_name +
             '; ' + data)
     return data, result
