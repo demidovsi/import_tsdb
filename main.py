@@ -85,15 +85,15 @@ if __name__ == "__main__":
     commondata.write_log('INFO', 'main', time.ctime() + ' Start import_tsdb')
 
     # read_params()
-    result = False
+    # result = False
     # try:
     #     txt, result = commondata.login_ksvd()
     # except:
     #     result = False
-    if not result:
-        while not result:
-            commondata.write_log('INFO', 'main', time.ctime() + ': Sleep 60 seconds')
-            time.sleep(60)
+    # if not result:
+    #     while not result:
+    #         commondata.write_log('INFO', 'main', time.ctime() + ': Sleep 60 seconds')
+    #         time.sleep(60)
             # read_params()
             # try:
             #     txt, result = commondata.login_ksvd()
