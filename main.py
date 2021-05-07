@@ -96,7 +96,21 @@ def make_login():
 def get_value_time(t):
     return t.hour * 3600 + t.minute * 60 + t.second + t.microsecond // 1000 / 1000
 
+def get_duration(t: int):
+    result = ''
+    t1 = int(t) % 60
+    t = t // 60
+    result = ':' + str(t1).zfill(2)  # секунды
+    t1 = int(t) % 60
+    t = t // 60
+    result = ':' + str(t1).zfill(2) + result  # минуты
+    t1 = int(t) % 60
+    t = t // 60
+    result = str(int(t)) + '/' + str(t1).zfill(2) + result  # дни и часы
+    return result
+
 if __name__ == "__main__":
+    d: int = 0
     commondata.write_log('WARN', 'main', time.ctime() + ' Start import_tsdb')
     make_login()
     start_thread()
@@ -104,7 +118,7 @@ if __name__ == "__main__":
     start_thread_meteo_fact()
     start_thread_meteo_forecast()
     tek_time = time.time()
-    time_begin = datetime.datetime.now()
+    time_begin = tek_time
     while True:
         time.sleep(1)
         if not commondata.is_live:
@@ -121,5 +135,5 @@ if __name__ == "__main__":
             start_thread_meteo_forecast()
         if time.time() - tek_time >= 300:
             tek_time = time.time()
-            d = get_value_time(datetime.datetime.now()) - get_value_time(time_begin)
-            commondata.write_log('INFO', 'Live', time.ctime() + ' The Servis import-tsdb works for ' + "%.3f" % d + ' sec')
+            d = tek_time - time_begin
+            commondata.write_log('INFO', 'Live', time.ctime() + ' The Servis import-tsdb works for ' + get_duration(d))
