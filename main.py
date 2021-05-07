@@ -6,7 +6,6 @@ import time
 import postfact
 import meteo_fact
 import meteo_forecast
-import datetime
 
 
 def start_thread():
@@ -120,6 +119,10 @@ if __name__ == "__main__":
     tek_time = time.time()
     time_begin = tek_time
     while True:
+        if time.time() - tek_time >= 300:
+            tek_time = time.time()
+            d = int(tek_time - time_begin)
+            commondata.write_log('INFO', 'Live', time.ctime() + ' The Servis import-tsdb works for ' + get_duration(d))
         time.sleep(1)
         if not commondata.is_live:
             commondata.write_log('WARN', 'main', 'Cancel thread Import')
@@ -133,7 +136,3 @@ if __name__ == "__main__":
         if not commondata.is_live_meteo_forecast:
             commondata.write_log('WARN', 'main', 'Cancel thread MeteoForecast')
             start_thread_meteo_forecast()
-        if time.time() - tek_time >= 300:
-            tek_time = time.time()
-            d = tek_time - time_begin
-            commondata.write_log('INFO', 'Live', time.ctime() + ' The Servis import-tsdb works for ' + get_duration(d))

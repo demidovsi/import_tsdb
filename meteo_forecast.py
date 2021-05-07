@@ -50,14 +50,15 @@ class MeteoForecast(threading.Thread):
                     if mas["type_his"] != 'meteo_forecast':
                         continue
                     # обрабатываем только тип временных рядов meteo_forecast (прогноз погоды)
+                    txt = ''
                     try:
                         discret = int(mas["discret"])
                         delta = tek_time % discret
                         if delta <= 1:
                             txt, result = self.send_url(mas['meteo_url'], mas['meteo_api_id'], mas['x'], mas['y'])
                             hours = json.loads(txt)['hourly']
-                            toper = time.time()
-                            txt_result = 'DEBUG'
+                            # toper = time.time()
+                            # txt_result = 'DEBUG'
                             for val in hours:
                                 dt = time.gmtime(val["dt"])
                                 st = time.strftime('%Y-%m-%d %H:%M:%S', dt)
@@ -70,7 +71,7 @@ class MeteoForecast(threading.Thread):
                                     commondata.write_log('ERROR', 'MeteoForecast', time.ctime() + ' ' + txt)
                                     txt_result = 'ERROR'
                                     break
-                            toper = time.time() - toper
+                            # toper = time.time() - toper
                             # commondata.write_log(
                             #     txt_result, 'MeteoForecast', str(mas["id"]) + ' ' + mas["typeobj_code"] +
                             #     ' ' + mas["param_code"] + ' ' + str(discret) + ' ' +
@@ -81,9 +82,9 @@ class MeteoForecast(threading.Thread):
                         commondata.count_error = commondata.count_error + 1
                         commondata.write_log(
                             'ERROR ', 'MeteoForecast.run', time.ctime() + ' ' + f"{err}" + ' ' + mas["id"] +
-                                                        ';' + mas["typeobj_code"] + '; ' + mas["param_code"] +
-                                                        '; x=' + str(mas["x"]) +
-                                                        '; y=' + str(mas["y"]) + '; ' + str(mas["discret"]))
+                            ';' + mas["typeobj_code"] + '; ' + mas["param_code"] +
+                            '; x=' + str(mas["x"]) + '; y=' + str(mas["y"]) + '; ' + str(mas["discret"]) +
+                            ': txt=' + txt)
                 time.sleep(1)
                 tek_time = time.time()
 
