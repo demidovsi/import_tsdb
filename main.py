@@ -103,8 +103,8 @@ def get_duration(t: int):
     t1 = int(t) % 60
     t = t // 60
     result = ':' + str(t1).zfill(2) + result  # минуты
-    t1 = int(t) % 60
-    t = t // 60
+    t1 = int(t) % 24
+    t = t // 24
     result = str(int(t)) + '/' + str(t1).zfill(2) + result  # дни и часы
     return result
 

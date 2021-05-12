@@ -57,27 +57,19 @@ class MeteoForecast(threading.Thread):
                         if delta <= 1:
                             txt, result = self.send_url(mas['meteo_url'], mas['meteo_api_id'], mas['x'], mas['y'])
                             hours = json.loads(txt)['hourly']
-                            # toper = time.time()
-                            # txt_result = 'DEBUG'
                             for val in hours:
                                 dt = time.gmtime(val["dt"])
                                 st = time.strftime('%Y-%m-%d %H:%M:%S', dt)
 
-                                txt = 'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +\
+                                st = 'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +\
                                     str(mas["id"]) + '?value_json=' + str(val) + '&dt=' + st
-                                txt, result = commondata.send_rest(txt, 'POST')
+                                txt, result = commondata.send_rest(st, 'POST')
                                 if not result or ('error_sql' in txt):
                                     commondata.count_error = commondata.count_error + 1
-                                    commondata.write_log('ERROR', 'MeteoForecast', time.ctime() + ' ' + txt)
-                                    txt_result = 'ERROR'
+                                    commondata.write_log('ERROR', 'MeteoForecast', time.ctime() + ' ' + txt +
+                                                        '\nmes = ' + st + '\nanswer = ' + txt +
+                                                         '\ncount_error = ' + str(commondata.count_error))
                                     break
-                            # toper = time.time() - toper
-                            # commondata.write_log(
-                            #     txt_result, 'MeteoForecast', str(mas["id"]) + ' ' + mas["typeobj_code"] +
-                            #     ' ' + mas["param_code"] + ' ' + str(discret) + ' ' +
-                            #     time.ctime(tek_time) + ' error_count=' + str(commondata.count_error) +
-                            #     '; tek=' + time.ctime() + '; t=' + str(toper)
-                            # )
                     except Exception as err:
                         commondata.count_error = commondata.count_error + 1
                         commondata.write_log(
@@ -87,7 +79,6 @@ class MeteoForecast(threading.Thread):
                             ': txt=' + txt)
                 time.sleep(1)
                 tek_time = time.time()
-
         except Exception as err:
             commondata.write_log('FATAL ', 'MeteoForecast.run', time.ctime() + ' ' + f"{err}")
         commondata.is_live_meteo_forecast = False
