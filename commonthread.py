@@ -25,7 +25,7 @@ class Import(threading.Thread):
 
     def print_params(self):
         js = json.loads(commondata.txt)
-        commondata.mas_js = js[0]
+        commondata.mas_js = js
         # for mas in commondata.mas_js:
         #     commondata.write_log('DEBUG', 'Timport.print_params', mas)
 

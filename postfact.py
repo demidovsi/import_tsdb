@@ -31,7 +31,7 @@ class PostFact(threading.Thread):
                 # читаем конфигурацию
                         txt, result = commondata.send_rest('Entity.FullList/config')
                         if result:
-                            js = json.loads(txt)[0]
+                            js = json.loads(txt)
                             for i in range(0, len(js)):
                                 st = js[i]["sh_name"]
                                 if st in list:  # можно делать потоки для постфактумного заполнения
