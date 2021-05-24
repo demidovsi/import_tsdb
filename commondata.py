@@ -118,7 +118,8 @@ def send_tsdb(mes: str, directive="GET", qrepeat =2) -> (str, bool):
             result = response.ok
             break
     if not result:
-        write_log('ERROR', 'send_tsdb', data + '\n\t' + mes)
+        write_log('ERROR', 'send_tsdb',
+                  data + '; count_error_tsdb=' + str(commondata.count_error_connect_tsdb) + '\n\t' + mes)
     return data, result
 
 
