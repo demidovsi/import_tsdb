@@ -4,6 +4,6 @@ COPY . /code
 
 WORKDIR /code
 
-RUN pip install -r requirements.txt --no--cache-dir
+RUN pip install --no--cache-dir -r requirements.txt
 
 CMD [ "python", "./main.py" ]
