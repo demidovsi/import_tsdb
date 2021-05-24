@@ -22,6 +22,8 @@ mas_js = None  # текущий массив параметров
 txt = None  # текст текущего масива параметров
 check_mas_db = 30  # периодичность проверки изменений в НСИ исторических данных
 count_error = 0
+count_error_connect_rest = 0
+count_error_connect_tsdb = 0
 MeteoFact = None
 MeteoForecast = None
 
@@ -38,8 +40,10 @@ def login_ksvd():
             )
     except HTTPError as err:
         data = f'HTTP error occurred: {err}'
+        commondata.count_error_connect_rest = commondata.count_error_connect_rest + 1
         # write_log('ERROR', 'login_ksvd', data)
     except Exception as err:
+        commondata.count_error_connect_rest = commondata.count_error_connect_rest + 1
         data = f'Other error occurred: : {err}'
         # write_log('ERROR', 'login_ksvd', data)
     else:
@@ -73,14 +77,17 @@ def send_rest(mes, directive="GET"):
         response = requests.request(directive, url + mes, headers=headers,
                                     json={"token": token})
     except HTTPError as err:
+        commondata.count_error_connect_rest = commondata.count_error_connect_rest + 1
         data = f'HTTP error occurred: {err}'
         write_log('ERROR', 'send_rest', data + '\n\t' + mes)
         result = False
     except Exception as err:
+        commondata.count_error_connect_rest = commondata.count_error_connect_rest + 1
         data = f'Other error occurred: {err}'
         write_log('ERROR', 'send_rest', data + '\n\t' + mes)
         result = False
     else:
+        commondata.count_error_connect_rest = 0
         data = response.text
         result = response.ok
     return data, result
@@ -96,17 +103,20 @@ def send_tsdb(mes: str, directive="GET", qrepeat =2) -> (str, bool):
             }
             response = requests.request(directive, url_tsdb + mes, headers=headers)
         except HTTPError as err:
+            commondata.count_error_connect_tsdb = commondata.count_error_connect_tsdb + 1
             data = f'HTTP error occurred: {err}'
             result = False
             q = q + 1
         except Exception as err:
+            commondata.count_error_connect_tsdb = commondata.count_error_connect_tsdb + 1
             data = f'Other error occurred: {err}'
             result = False
             q = q + 1
         else:
+            commondata.count_error_connect_tsdb = 0
             data = response.text
             result = response.ok
-            q = q + 1
+            break
     if not result:
         write_log('ERROR', 'send_tsdb', data + '\n\t' + mes)
     return data, result

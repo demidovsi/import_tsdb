@@ -88,7 +88,9 @@ def make_login():
     except:
         pass
     if not result:
-        commondata.write_log('INFO', 'main', 'Wait good login: ' + time.ctime() + ' Sleep 60 seconds')
+        commondata.count_error_connect = commondata.count_error_connect + 1
+        commondata.write_log('INFO', 'main', 'Wait good login: ' + time.ctime() + \
+                             ' Sleep 60 seconds; count_error_connect = ' + str(commondata.count_error_connect))
         time.sleep(60)
         make_login()
 
@@ -136,3 +138,10 @@ if __name__ == "__main__":
         if not commondata.is_live_meteo_forecast:
             commondata.write_log('WARN', 'main', 'Cancel thread MeteoForecast')
             start_thread_meteo_forecast()
+        if (commondata.count_error_connect_rest > 5) or (commondata.count_error_connect_tsdb > 5):
+            commondata.write_log('WARN', 'main', 'Restart: count_error_connect_rest = ' +
+                                 str(commondata.count_error_connect_rest) + '; count_error_connect_tsdb = ' +
+                                 str(commondata.count_error_connect_tsdb)
+            )
+            break  # перегрузиться
+
