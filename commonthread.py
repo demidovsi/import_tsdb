@@ -20,7 +20,7 @@ class Import(threading.Thread):
         self.time_check = time.time()  # время последней проверки базы данных
 
     def get_params(self):
-        txt, result = commondata.send_rest('Entity.GetListHis')
+        txt, result = commondata.send_rest('v1/entities/his/list?schema_name=' + commondata.schema_name)
         return txt, result
 
     def print_params(self):

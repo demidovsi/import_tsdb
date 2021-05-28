@@ -38,11 +38,7 @@ def start_thread_post_fact():
 def read_params():
     try:
         commondata.info_code = os.environ.get("MDMPROXY_INFO_CODE")
-        if not commondata.info_code:
-            commondata.info_code = 'nsi'
         commondata.schema_name = os.environ.get("MDMPROXY_SCHEMA_NAME")
-        if not commondata.schema_name:
-            commondata.schema_name = 'bms'
         commondata.url = os.environ.get("MDMPROXY_URL")
         commondata.url_tsdb = os.environ.get("MDMPROXY_URL_TSDB")
         commondata.user_name = os.environ.get("MDMPROXY_USER_NAME")
@@ -73,6 +69,10 @@ def read_params():
                             commondata.password = ch.text
                         elif (ch.tag == 'Check_mas_db') and not commondata.check_mas_db:
                             commondata.check_mas_db = int(ch.text)
+        if not commondata.info_code:
+            commondata.info_code = 'nsi'
+        if not commondata.schema_name:
+            commondata.schema_name = 'bms'
         st = 'Environments: SchemaName=' + commondata.schema_name + '; InfoCode=' + commondata.info_code + \
              '; url_MDM=' + commondata.url + '; url_TSDB=' + commondata.url_tsdb + \
              '; check_mas_db=' + str(commondata.check_mas_db) + ' sec'
@@ -138,7 +138,7 @@ if __name__ == "__main__":
         if not commondata.is_live_meteo_forecast:
             commondata.write_log('WARN', 'main', 'Cancel thread MeteoForecast')
             start_thread_meteo_forecast()
-        if (commondata.count_error_connect_rest > 5) or (commondata.count_error_connect_tsdb > 5):
+        if (commondata.count_error_connect_rest > 50) or (commondata.count_error_connect_tsdb > 50):
             commondata.write_log('WARN', 'main', 'Restart: count_error_connect_rest = ' +
                                  str(commondata.count_error_connect_rest) + '; count_error_connect_tsdb = ' +
                                  str(commondata.count_error_connect_tsdb)
