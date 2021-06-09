@@ -88,9 +88,9 @@ def make_login():
     except:
         pass
     if not result:
-        commondata.count_error_connect = commondata.count_error_connect + 1
+        commondata.count_error_connect_rest = commondata.count_error_connect_rest + 1
         commondata.write_log('INFO', 'main', 'Wait good login: ' + time.ctime() + \
-                             ' Sleep 60 seconds; count_error_connect = ' + str(commondata.count_error_connect))
+                             ' Sleep 60 seconds; count_error_connect = ' + str(commondata.count_error_connect_rest))
         time.sleep(60)
         make_login()
 
