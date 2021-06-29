@@ -29,7 +29,8 @@ class PostFact(threading.Thread):
                             list_param.append(mas["param_code"])
                     if len(list) > 0:
                 # читаем конфигурацию
-                        txt, result = commondata.send_rest('Entity.FullList/config')
+                        txt, result = commondata.send_rest(
+                            'Entity.FullList/config?schema_name=' + commondata.schema_name)
                         if result:
                             js = json.loads(txt)
                             for i in range(0, len(js)):

@@ -62,7 +62,8 @@ class MeteoFact(threading.Thread):
                             st = commondata.time_for_sql(dt, False)
 
                             txt = 'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +\
-                                str(mas["id"]) + '?value_json=' + str(val) + '&dt=' + st
+                                  str(mas["id"]) + '?value_json=' + str(val) + '&dt=' + st + '&schema_name=' + \
+                                  commondata.schema_name
                             txt, result = commondata.send_rest(txt, 'POST')
                             if not result or ('error_sql' in txt):
                                 commondata.count_error = commondata.count_error + 1

@@ -70,7 +70,8 @@ class Import(threading.Thread):
                                     st = commondata.time_for_sql(dt, False)
                                     txt, result = commondata.send_rest(
                                         'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +
-                                        str(mas["id"]) + '?value=' + str(val) + '&dt=' + st, 'POST')
+                                        str(mas["id"]) + '?value=' + str(val) + '&dt=' + st + '&schema_name=' +
+                                        commondata.schema_name, 'POST')
                                     if not result or ('error_sql' in txt):
                                         commondata.count_error = commondata.count_error + 1
                                         commondata.write_log('WARN', 'Import.run', txt)

@@ -2,9 +2,9 @@
 <Modeler>
     <MDMProxy>
         <InfoCode>NSI</InfoCode>
-        <SchemaName>test</SchemaName>
-        <URL>http://127.0.0.1:5001/</URL>
-        <URL_TSDB>http://127.0.0.1:3001/</URL_TSDB>
+        <SchemaName>bms</SchemaName>
+        <URL>http://127.0.0.1:5000/</URL>
+        <URL_TSDB>http://127.0.0.1:3000/</URL_TSDB>
 	    <Check_mas_db>30 </Check_mas_db>
         <UserName>user</UserName>
         <Password>!AlteroSmart123</Password>

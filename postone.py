@@ -51,6 +51,7 @@ class PostOne(threading.Thread):
                                 '~LF~' + time.strftime('t_beg=%Y-%m-%d %H:%M:%S', time.localtime(self.dt_beg)) +
                                 '~LF~' + time.strftime('t_end=%Y-%m-%d %H:%M:%S', time.localtime(self.dt_end)) +
                                 time.strftime('~LF~work for=%Y-%m-%d %H:%M:%S', time.localtime(t0)) +
+                                '&schema_name=' + commondata.schema_name +
                                 '&where=sh_name="' + self.typeobj_code + '_' + self.param_code + '"')
                             if not result:
                                 commondata.write_log('ERROR ', 'TPostFact.run', txt)
@@ -61,6 +62,7 @@ class PostOne(threading.Thread):
                         txt, result = commondata.send_rest(
                             'Entity.SetValue/config?param_code=value_string' +
                             '&value=' +
+                            '&schema_name=' + commondata.schema_name +
                             '&where=sh_name="' + self.typeobj_code + '_' + self.param_code + '"')
                         if not result:
                             commondata.write_log('WARN', 'PostOne.run', txt)
@@ -96,7 +98,7 @@ def work_one_time(tek_time, discret, equipment_id, parameter_id, typeobj_code, p
                 val = val / count  # среднее значение
                 txt, result = commondata.send_rest(
                     'Entity.SetHistory/' + typeobj_code + '/' + param_code + '/' +
-                    str(id) + '?value=' + str(val) + '&dt=' + dt, 'POST')
+                    str(id) + '?value=' + str(val) + '&dt=' + dt + '&schema_name=' + commondata.schema_name, 'POST')
                 if not result:
                     commondata.count_error = commondata.count_error + 1
                     commondata.write_log('ERROR', 'work_one_time', txt)
