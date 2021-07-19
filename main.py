@@ -4,8 +4,8 @@ import commonthread
 import os
 import time
 import postfact
-import meteo_fact
-import meteo_forecast
+import meteofact
+import meteoforecast
 
 
 def start_thread():
@@ -16,14 +16,14 @@ def start_thread():
 
 
 def start_thread_meteo_fact():
-    commondata.MeteoFact = meteo_fact.MeteoFact()
+    commondata.MeteoFact = meteofact.MeteoFact()
     commondata.is_live_meteo_fact = True
     commondata.MeteoFact.start()
     commondata.write_log('INFO', 'main', 'Start thread MeteoFact ' + time.ctime())
 
 
 def start_thread_meteo_forecast():
-    commondata.MeteoForecast = meteo_forecast.MeteoForecast()
+    commondata.MeteoForecast = meteoforecast.MeteoForecast()
     commondata.is_live_meteo_forecast = True
     commondata.MeteoForecast.start()
     commondata.write_log('INFO', 'main', 'Start thread MeteoForecast ' + time.ctime())
@@ -34,6 +34,7 @@ def start_thread_post_fact():
     commondata.is_live_post_fact = True
     at.start()
     commondata.write_log('INFO', 'main', 'Start thread PostFact ' + time.ctime())
+
 
 def read_params():
     try:
@@ -80,6 +81,7 @@ def read_params():
     except Exception as e:
         commondata.write_log('ERROR', 'main', f"{e}")
 
+
 def make_login():
     read_params()
     result = False
@@ -94,8 +96,10 @@ def make_login():
         time.sleep(60)
         make_login()
 
+
 def get_value_time(t):
     return t.hour * 3600 + t.minute * 60 + t.second + t.microsecond // 1000 / 1000
+
 
 def get_duration(t: int):
     result = ''
@@ -109,6 +113,7 @@ def get_duration(t: int):
     t = t // 24
     result = str(int(t)) + '/' + str(t1).zfill(2) + result  # дни и часы
     return result
+
 
 if __name__ == "__main__":
     d: int = 0
