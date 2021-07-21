@@ -67,24 +67,24 @@ def login_ksvd():
     return data, result
 
 
-def send_rest(mes, directive="GET"):
+def send_rest(mes, directiva="GET"):
     if not token:
         return 'Не получен токен для работы', False
     try:
         headers = {
             "Accept": "application/json"
         }
-        response = requests.request(directive, url + mes, headers=headers,
+        response = requests.request(directiva, url + mes, headers=headers,
                                     json={"token": token})
     except HTTPError as err:
         commondata.count_error_connect_rest = commondata.count_error_connect_rest + 1
         data = f'HTTP error occurred: {err}'
-        write_log('ERROR', 'send_rest', data + '\n\t' + mes)
+        write_log('ERROR', 'send_rest', data + '\n\t' + time.ctime() + ': ' + url + ' ' + directiva + ' '  + mes)
         result = False
     except Exception as err:
         commondata.count_error_connect_rest = commondata.count_error_connect_rest + 1
         data = f'Other error occurred: {err}'
-        write_log('ERROR', 'send_rest', data + '\n\t' + mes)
+        write_log('ERROR', 'send_rest', data + '\n\t' + time.ctime() + ': '  + url + ' ' + directiva + ' ' + mes)
         result = False
     else:
         commondata.count_error_connect_rest = 0

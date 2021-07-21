@@ -97,8 +97,8 @@ def work_one_time(tek_time, discret, equipment_id, parameter_id, typeobj_code, p
             if count > 0:
                 val = val / count  # среднее значение
                 txt, result = commondata.send_rest(
-                    'Entity.SetHistory/' + typeobj_code + '/' + param_code + '/' +
-                    str(id) + '?value=' + str(val) + '&dt=' + dt + '&schema_name=' + commondata.schema_name, 'POST')
+                    'v1/MDM/his/' + commondata.schema_name + '/' + typeobj_code + '/' + param_code + '/' +
+                    str(id) + '?value=' + str(val) + '&dt=' + dt, 'POST')
                 if not result:
                     commondata.count_error = commondata.count_error + 1
                     commondata.write_log('ERROR', 'work_one_time', txt)

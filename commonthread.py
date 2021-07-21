@@ -69,9 +69,9 @@ class Import(threading.Thread):
                                     val = val / count  # среднее значение
                                     st = commondata.time_for_sql(dt, False)
                                     txt, result = commondata.send_rest(
-                                        'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +
-                                        str(mas["id"]) + '?value=' + str(val) + '&dt=' + st + '&schema_name=' +
-                                        commondata.schema_name, 'POST')
+                                        'v1/MDM/his/' + commondata.schema_name + mas["typeobj_code"] + '/' +
+                                        mas["param_code"] + '/' + str(mas["id"]) + '?value=' + str(val) + '&dt=' + st,
+                                        'POST')
                                     if not result or ('error_sql' in txt):
                                         commondata.count_error = commondata.count_error + 1
                                         commondata.write_log('WARN', 'Import.run', txt)

@@ -61,9 +61,9 @@ class MeteoForecast(threading.Thread):
                                 dt = time.gmtime(val["dt"])
                                 st = time.strftime('%Y-%m-%d %H:%M:%S', dt)
 
-                                st = 'Entity.SetHistory/' + mas["typeobj_code"] + '/' + mas["param_code"] + '/' +\
-                                    str(mas["id"]) + '?value_json=' + str(val) + '&dt=' + st+ '&schema_name=' + \
-                                    commondata.schema_name
+                                st = 'v1/MDM/his/' + commondata.schema_name + '/' + mas["typeobj_code"] + '/' + \
+                                     mas["param_code"] + '/' + str(mas["id"]) + '?value_json=' + str(val) + \
+                                     '&dt=' + st
                                 txt, result = commondata.send_rest(st, 'POST')
                                 if not result or ('error_sql' in txt):
                                     commondata.count_error = commondata.count_error + 1
