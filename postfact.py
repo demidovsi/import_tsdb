@@ -30,7 +30,7 @@ class PostFact(threading.Thread):
                     if len(list) > 0:
                 # читаем конфигурацию
                         txt, result = commondata.send_rest(
-                            'Entity.FullList/config?schema_name=' + commondata.schema_name)
+                            'v1/objects/full_list/' + commondata.schema_name + '/config')
                         if result:
                             js = json.loads(txt)
                             for i in range(0, len(js)):
