@@ -5,11 +5,12 @@ import commondata
 import time
 
 
+version = 'v1.0.1 2022-05-22'
 info_code = "NSI"
 schema_name = 'test'
 user_name = "user"
 password = "!AlteroSmart123"
-url = '127.0.0.1:5000/'
+url = '127.0.0.1:5001/'
 url_tsdb = '127.0.0.1:3001/'
 token = None
 expires = None
@@ -19,7 +20,7 @@ is_live_meteo_fact = False
 is_live_meteo_forecast = False
 is_live_post_fact = False
 mas_js = None  # текущий массив параметров
-txt = None  # текст текущего масива параметров
+txt = None  # текст текущего массива параметров
 check_mas_db = 30  # периодичность проверки изменений в НСИ исторических данных
 count_error = 0
 count_error_connect_rest = 0
@@ -145,4 +146,11 @@ def traslateToBase(st):
     st = st.replace('\n', '~LF~').replace('(', '~A~').replace(')', '~B~').replace('@', '~a1~')
     st = st.replace(',', '~a2~').replace('=', '~a3~').replace('"', '~a4~').replace("'", '~a5~')
     st = st.replace(':', '~a6~')
+    return st
+
+
+def traslateFromBase(st):
+    st = st.replace('~LF~', '\n').replace('~A~', '(').replace('~B~', ')').replace('~a1~', '@')
+    st = st.replace('~a2~', ',').replace('~a3~', '=').replace('~a4~', '"').replace('~a5~', "'")
+    st = st.replace('~a6~', ':')
     return st

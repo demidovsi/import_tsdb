@@ -9,7 +9,7 @@
         <UserName>user</UserName>
         <Password>!AlteroSmart123</Password>
 
-        <_URL>http://python-restproxy:5000/</_URL>
+        <_URL>http://python-restproxy:5001/</_URL>
         <_URL_TSDB>http://au-tsdb:3000/</_URL_TSDB>
     </MDMProxy>
 </Modeler>

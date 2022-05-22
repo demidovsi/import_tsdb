@@ -83,7 +83,6 @@ def read_params():
 
 
 def make_login():
-    read_params()
     result = False
     try:
         txt, result = commondata.login_ksvd()
@@ -117,8 +116,10 @@ def get_duration(t: int):
 
 if __name__ == "__main__":
     d: int = 0
-    commondata.write_log('WARN', 'main', time.ctime() + ' Start import_tsdb')
-    make_login()
+    commondata.write_log('WARN', 'main', time.ctime() + ' Start import_tsdb version ' + commondata.version)
+    read_params()
+    # make_login()
+    commondata.token = True
     start_thread()
     start_thread_post_fact()
     start_thread_meteo_fact()
@@ -129,7 +130,8 @@ if __name__ == "__main__":
         if time.time() - tek_time >= 300:
             tek_time = time.time()
             d = int(tek_time - time_begin)
-            commondata.write_log('INFO', 'Live', time.ctime() + ' The Servis import-tsdb works for ' + get_duration(d))
+            commondata.write_log('INFO', 'Live', time.ctime() + ' The Servis import-tsdb version ' +
+                                 commondata.version + ' works for ' + get_duration(d))
         time.sleep(1)
         if not commondata.is_live:
             commondata.write_log('WARN', 'main', 'Cancel thread Import')

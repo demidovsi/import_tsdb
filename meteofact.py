@@ -26,6 +26,7 @@ class MeteoFact(threading.Thread):
                 }
                 mes = '?lat=' + str(x) + '&lon=' + str(y) + '&appid=' + api_id + '&units=metric'
                 response = requests.request(directive, url + mes, headers=headers)
+                # print(url + mes)
             except HTTPError as err:
                 data = f'HTTP error occurred: {err}'
                 result = False
@@ -56,7 +57,8 @@ class MeteoFact(threading.Thread):
                         delta = tek_time % discret
                         if delta <= 1:
                             toper = time.time()
-                            txt, result = self.send_url(mas['meteo_url'], mas['meteo_api_id'], mas['x'], mas['y'])
+                            txt, result = self.send_url(
+                                commondata.traslateFromBase(mas['meteo_url']), mas['meteo_api_id'], mas['x'], mas['y'])
                             toper = time.time() - toper
                             val = json.loads(txt)['current']
                             st = commondata.time_for_sql(dt, False)

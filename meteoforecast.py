@@ -55,7 +55,8 @@ class MeteoForecast(threading.Thread):
                         discret = int(mas["discret"])
                         delta = tek_time % discret
                         if delta <= 1:
-                            txt, result = self.send_url(mas['meteo_url'], mas['meteo_api_id'], mas['x'], mas['y'])
+                            txt, result = self.send_url(
+                                commondata.traslateFromBase(mas['meteo_url']), mas['meteo_api_id'], mas['x'], mas['y'])
                             hours = json.loads(txt)['hourly']
                             for val in hours:
                                 dt = time.gmtime(val["dt"])
