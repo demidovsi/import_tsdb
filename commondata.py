@@ -5,7 +5,7 @@ import commondata
 import time
 
 
-version = 'v1.0.1 2022-05-22'
+version = 'v1.0.3 2022-06-'
 info_code = "NSI"
 schema_name = 'test'
 user_name = "user"

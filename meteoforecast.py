@@ -58,9 +58,11 @@ class MeteoForecast(threading.Thread):
                             txt, result = self.send_url(
                                 commondata.traslateFromBase(mas['meteo_url']), mas['meteo_api_id'], mas['x'], mas['y'])
                             hours = json.loads(txt)['hourly']
+                            print('len(hours)=', len(hours))
                             for val in hours:
                                 dt = time.gmtime(val["dt"])
                                 st = time.strftime('%Y-%m-%d %H:%M:%S', dt)
+                                print('dt=', st)
 
                                 st = 'v1/MDM/his/' + commondata.schema_name + '/' + mas["typeobj_code"] + '/' + \
                                      mas["param_code"] + '/' + str(mas["id"]) + '?value_json=' + str(val) + \
