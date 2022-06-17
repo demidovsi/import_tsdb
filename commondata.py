@@ -108,8 +108,6 @@ def login(show_error=True):
                 token = ''
                 app_lang = 'en'
                 user_role = ''
-                # if show_error:
-                #     make_question(None, '', 'Ошибка LOGIN', str(txt_z) + '\n' + txt, onlyok=True)
         except Exception as err:
             txt_error = f'Error occurred: : {err}'
             if show_error:
