@@ -6,8 +6,8 @@
         <URL>http://127.0.0.1:5001/</URL>
         <URL_TSDB>http://127.0.0.1:3000/</URL_TSDB>
 	    <Check_mas_db>30 </Check_mas_db>
-        <UserName>user</UserName>
-        <Password>!AlteroSmart123</Password>
+        <UserName>superadmin</UserName>
+        <Password>Kirill!981</Password>
 
         <_URL>http://python-restproxy:5001/</_URL>
         <_URL_TSDB>http://au-tsdb:3000/</_URL_TSDB>

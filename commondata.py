@@ -8,7 +8,7 @@ import time
 version = 'v1.0.3 2022-06-17'
 info_code = "NSI"
 schema_name = 'test'
-user_name = "user"
+user_name = "superadmin"
 password = "!AlteroSmart123"
 url = '127.0.0.1:5001/'
 url_tsdb = '127.0.0.1:3001/'
@@ -104,10 +104,6 @@ def login(show_error=True):
                     app_lang = js['lang']
                 if 'role' in js:
                     user_role = js['role']
-                try:
-                    print('expires', expires, time.ctime(expires), 'token', token)
-                except:
-                    pass
             else:
                 token = ''
                 app_lang = 'en'

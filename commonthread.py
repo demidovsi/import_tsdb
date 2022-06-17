@@ -106,7 +106,7 @@ class Import(threading.Thread):
                 else:
                     if time.time() - time_login >= 3600:  #  прошел час
                         commondata.write_log(
-                            'DEBUG', 'Import.run', time.ctime() + ' login_ksvd every hour')
+                            'DEBUG', 'Import.run', time.ctime() + ' login every hour')
                         # print(time.ctime(), commondata.token)
                         commondata.login()
                         time_login = time.time()
