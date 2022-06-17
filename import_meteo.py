@@ -85,7 +85,7 @@ def read_params():
 def make_login():
     result = False
     try:
-        txt, result = commondata.login_ksvd()
+        txt, result, ch = commondata.login()
     except:
         pass
     if not result:
@@ -118,8 +118,7 @@ if __name__ == "__main__":
     d: int = 0
     commondata.write_log('WARN', 'main', time.ctime() + ' Start import_tsdb version ' + commondata.version)
     read_params()
-    # make_login()
-    commondata.token = True
+    make_login()
     start_thread()
     start_thread_post_fact()
     start_thread_meteo_fact()

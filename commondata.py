@@ -5,7 +5,7 @@ import commondata
 import time
 
 
-version = 'v1.0.3 2022-06-'
+version = 'v1.0.3 2022-06-17'
 info_code = "NSI"
 schema_name = 'test'
 user_name = "user"
@@ -14,6 +14,8 @@ url = '127.0.0.1:5001/'
 url_tsdb = '127.0.0.1:3001/'
 token = None
 expires = None
+app_lang = 'en'
+user_role = ''
 mas_thread = []
 is_live = False
 is_live_meteo_fact = False
@@ -66,6 +68,58 @@ def login_ksvd():
             ' not received token from ' + commondata.url + 'auth/login for username=' + commondata.user_name +
             '; ' + data)
     return data, result
+
+
+def login(show_error=True):
+    global token, expires, app_lang, user_role
+    result = False
+    lang_old = app_lang
+    txt = ''
+    txt_z = {"login": user_name, "password": password, "rememberMe": True}
+    try:
+        headers = {"Accept": "application/json"}
+        response = requests.request(
+            'POST', url + 'v1/login', headers=headers,
+            json={"params": txt_z}
+            )
+    except HTTPError as err:
+        txt = f'HTTP error occurred: {err}'
+        if show_error:
+            write_log('ERROR', 'main', 'Error login: ' + time.ctime() +str(txt_z))
+    except Exception as err:
+        txt = f'Other error occurred: : {err}'
+        if show_error:
+            write_log('ERROR', 'main', 'Error login: ' + time.ctime() + str(txt_z))
+    else:
+        try:
+            txt = response.text
+            result = response.ok
+            if result:
+                js = json.loads(txt)
+                if "accessToken" in js:
+                    token = js["accessToken"]
+                if "expires" in js:
+                    expires = time.mktime(time.strptime(js["expires"], '%Y-%m-%d %H:%M:%S'))
+                if 'lang' in js:
+                    app_lang = js['lang']
+                if 'role' in js:
+                    user_role = js['role']
+                try:
+                    print('expires', expires, time.ctime(expires), 'token', token)
+                except:
+                    pass
+            else:
+                token = ''
+                app_lang = 'en'
+                user_role = ''
+                # if show_error:
+                #     make_question(None, '', 'Ошибка LOGIN', str(txt_z) + '\n' + txt, onlyok=True)
+        except Exception as err:
+            txt_error = f'Error occurred: : {err}'
+            if show_error:
+                write_log(
+                    'ERROR', 'main', 'Error login: ' + time.ctime() + str(txt_z) + ': ' + txt_error)
+    return txt, result, lang_old != app_lang
 
 
 def send_rest(mes, directiva="GET"):

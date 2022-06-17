@@ -108,7 +108,7 @@ class Import(threading.Thread):
                         commondata.write_log(
                             'DEBUG', 'Import.run', time.ctime() + ' login_ksvd every hour')
                         # print(time.ctime(), commondata.token)
-                        commondata.login_ksvd()
+                        commondata.login()
                         time_login = time.time()
                 time.sleep(1)
                 tek_time = time.time()

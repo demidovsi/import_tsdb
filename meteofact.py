@@ -55,7 +55,7 @@ class MeteoFact(threading.Thread):
                     try:
                         discret = int(mas["discret"])
                         delta = tek_time % discret
-                        if delta <= 1:
+                        if delta <= 10000:
                             toper = time.time()
                             txt, result = self.send_url(
                                 commondata.traslateFromBase(mas['meteo_url']), mas['meteo_api_id'], mas['x'], mas['y'])
